@@ -1,0 +1,20 @@
+.headerOption {
+    margin-right: 16px;
+    color: grey;
+    cursor: pointer;
+}
+
+.headerOption > h3 {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.headerOption:hover {
+    color: black;
+}
+
+.headerOption-icon {
+    object-fit: contain;
+    height: 25px !important;
+    width: 25px !important;
+}

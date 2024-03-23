@@ -1,11 +1,17 @@
 header {
     position: sticky;
+    top: 0;
+    border-bottom: 0.1px solid lightgray;
+    padding: 8px 0;
+    width: 100%;
+    z-index: 999;
 }
 
 .header-left img {
     object-fit: contain;
     height: 40px;
     margin-right: 12px;
+    cursor: pointer;
 }
 
 .header-search {
@@ -17,3 +23,4 @@ header {
     border: none;
     background: none;
 }
+

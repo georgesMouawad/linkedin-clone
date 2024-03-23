@@ -1,10 +1,12 @@
 import './style.css';
+import { Avatar } from '@mui/material';
 
-const HeaderOption = ({ icon, title }) => {
+const HeaderOption = ({ avatar, Icon, title }) => {
     return (
-        <div className="headerOption">
-            {icon && <icon className="headerOption-icon" />}
-            <h3 className='headerOption-title' >{title}</h3>
+        <div className="headerOption flex column center">
+            {Icon && <Icon className="headerOption-icon" />}
+            {avatar && <Avatar className="headerOption-icon" src={avatar} />}
+            <h3 className="headerOption-title">{title}</h3>
         </div>
     );
 };
