@@ -22,15 +22,15 @@ const SignupForm = ({ switchHandler, handleSignup, validation }) => {
             </div>
             <form className="flex center column" onSubmit={handleSubmit}>
                 <div>
-                    <label for="username">Username:</label>
+                    <label>Username:</label>
                     <input type="text" name="username" placeholder="username" required onChange={handleChange} />
                 </div>
                 <div>
-                    <label for="email">Email:</label>
-                    <input type="text" name="email" placeholder="user@journey.com" required onChange={handleChange} />
+                    <label>Email:</label>
+                    <input type="text" name="email" placeholder="user@email.com" required onChange={handleChange} />
                 </div>
                 <div>
-                    <label for="password">Password:</label>
+                    <label>Password:</label>
                     <input type="password" name="password" placeholder="password" required onChange={handleChange} />
                 </div>
                 {validation && (

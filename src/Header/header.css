@@ -15,6 +15,7 @@ header {
 }
 
 .header-search {
+    padding-left: 8px;
     background-color: #eef3f8;
 }
 
@@ -22,5 +23,6 @@ header {
     outline: none;
     border: none;
     background: none;
+    margin-bottom: 0;
 }
 

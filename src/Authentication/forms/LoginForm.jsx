@@ -1,4 +1,5 @@
 import { React, useState } from 'react';
+import '../authentication.css'
 
 const LoginForm = ({ switchHandler, handleLogin, validation }) => {
     const [formdata, setFormData] = useState({
@@ -24,11 +25,11 @@ const LoginForm = ({ switchHandler, handleLogin, validation }) => {
             </div>
             <form className="flex column" onSubmit={handleSubmit}>
                 <div>
-                    <label for="username">Username or email:</label>
-                    <input type="text" name="login" placeholder="user@journey.com" required onChange={handleChange} />
+                    <label>Username or email:</label>
+                    <input type="text" name="login" placeholder="email" required onChange={handleChange} />
                 </div>
                 <div>
-                    <label for="password">Password:</label>
+                    <label>Password:</label>
                     <input type="password" name="password" placeholder="password" required onChange={handleChange} />
                 </div>
                 {validation && (

@@ -33,7 +33,7 @@ const Authentication = () => {
     };
 
     return (
-        <section class="form-component green-bg flex center">
+        <section className="form-component green-bg flex center">
             {isLogin ? (
                 <LoginForm switchHandler={switchHandler} handleLogin={handleLogin} />
             ) : (
