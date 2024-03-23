@@ -1,7 +1,7 @@
 import React from 'react';
-import HeaderOption from '../HeaderOption/HeaderOption';
+import HeaderOption from './HeaderOption/HeaderOption';
 
-import './style.css';
+import './header.css';
 import '../styles/utilities.css';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -28,7 +28,7 @@ const Header = () => {
                 <HeaderOption Icon={BusinessCenterIcon} title="Jobs" />
                 <HeaderOption Icon={ChatIcon} title="Messaging" />
                 <HeaderOption Icon={NotificationsIcon} title="Notification" />
-                <HeaderOption avatar='/assets/avatar.jpg' title="Me" />
+                <HeaderOption title="Me" />
             </div>
         </header>
     );

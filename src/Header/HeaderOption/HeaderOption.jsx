@@ -1,4 +1,4 @@
-import './style.css';
+import './headeroption.css';
 import { Avatar } from '@mui/material';
 
 const HeaderOption = ({ avatar, Icon, title }) => {

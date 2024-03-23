@@ -1,4 +1,4 @@
-import './style.css';
+import './inputoption.css';
 
 const InputOption = ({Icon, title}) => {
     return <div className="inputOption flex center">

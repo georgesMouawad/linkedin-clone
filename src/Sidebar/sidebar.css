@@ -12,6 +12,11 @@
     background-color: white;
 }
 
+.sidebar-top {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
 .sidebar-top>h4 {
     color: gray;
     font-size: 12px;
