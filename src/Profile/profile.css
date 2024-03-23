@@ -1,0 +1,63 @@
+.profile {
+    width: 800px;
+    margin: 0 auto;
+}
+
+.profile-header {
+    margin: 24px auto;
+    width: 100%;
+}
+
+.profile-header > img {
+    margin-bottom: -36px;
+    object-fit: cover;
+    width: 100%;
+    height: 200px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.profile-avatar {
+    margin-left: 64px;
+    scale: 3;
+}
+
+.profile-info {
+    margin-top: 48px;
+    margin-left: 32px;
+    padding-bottom: 32px;
+    
+}
+
+.profile-button {
+    background-color: #0a66c2;
+    padding: 6px 16px;
+    margin-top: 8px;
+    border-radius: 25px;
+}
+
+.profile-section {
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.profile-section > h3 {
+    margin-bottom: 16px;
+}
+
+.info-section {
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.info-section > img {
+    height:48px;
+    border-radius: 8px;
+    margin-right: 12px;
+}
+
+.skills > h4{
+    overflow-y: auto;
+    max-height: 300px;
+    margin-bottom: 12px;
+}

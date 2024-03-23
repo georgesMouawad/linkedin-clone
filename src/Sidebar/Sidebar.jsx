@@ -17,7 +17,7 @@ const Sidebar = ({ name, email, connections }) => {
             <div className="sidebar-top flex column center white-bg">
                 <img src="/assets/bg.jpg" alt="background" />
                 <Avatar className="sidebar-avatar" />
-                <h2>Welcom, {name}</h2>
+                <h2>Welcome, {name}</h2>
                 <h4>{email}</h4>
             </div>
             <div className="sidebar-stats">
