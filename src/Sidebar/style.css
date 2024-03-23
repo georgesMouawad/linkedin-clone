@@ -7,9 +7,76 @@
 }
 
 .sidebar-avatar {
-    margin-bottom: 8px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     background-color: white;
-    padding-bottom: 8px;
+}
+
+.sidebar-top>h4 {
+    color: gray;
+    font-size: 12px;
+}
+
+.sidebar-top>h2 {
+    font-size: 18px;
+}
+
+.sidebar-top>img {
+    margin-bottom: -24px;
+    height: 60px;
+    width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    object-fit: cover;
+}
+
+.sidebar-stats {
+    padding: 12px;
+    margin-bottom: 12px;
+    background-color: white;
+    border: 1p solid lightgray;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.sidebar-stat {
+    margin-top: 8px;
+}
+
+.sidebar-stat>p {
+    color: gray;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.sidebar-statnumber {
+    color: #0a66c2 !important;
+}
+
+.sidebar-bottom {
+    text-align: left;
+    padding: 12px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.sidebar-recentItem {
+    font-size: 12px;
+    color: gray;
+    font-weight: bolder;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.sidebar-recentItem:hover {
+    background-color: whitesmoke;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.sidebar-hash {
+    margin-right: 12px;
+    margin-left: 6px;
 }

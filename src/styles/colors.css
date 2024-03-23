@@ -17,9 +17,13 @@
     background-color: #DEE2E6;
 }
 
-.white-bg {
-    background-color: #FFFFFF;
+.light-gray-bg {
+    background-color: #e6e6e6;
 
+}
+
+.white-bg {
+    background-color: white;
 }
 
 .white-text {
