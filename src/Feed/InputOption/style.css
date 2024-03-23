@@ -1,0 +1,16 @@
+.inputOption {
+    margin-top: 12px;
+    padding: 12px;
+    color: gray;
+    cursor: pointer;
+}
+
+.inputOption:hover {
+    background-color: whitesmoke;
+    border-radius: 10px;
+}
+
+.inputOption > h4 {
+    font-weight: 500;
+    margin-left: 8px;
+}

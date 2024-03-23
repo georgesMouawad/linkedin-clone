@@ -1,0 +1,31 @@
+.feed {
+    flex: 0.6;
+    margin: 0 20px;
+}
+
+.feed-input-container {
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.feed-input {
+    padding: 12px;
+    color: gray;
+}
+
+.feed-input > form {
+    width: 100%;
+}
+
+.feed-input > form > input {
+    border: none;
+    flex: 1;
+    margin-left: 12px;
+    font-weight: 600;
+    outline-width: 0;
+
+}
+
+.feed-input > form > button {
+    display: none;
+}

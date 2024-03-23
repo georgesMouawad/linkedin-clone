@@ -13,7 +13,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const Header = () => {
     return (
-        <header className="flex space-evenly">
+        <header className="flex space-evenly white-bg">
             <div className="header-left flex ">
                 <img src="/assets/logo.png" alt="logo" />
                 <div className="header-search flex center">
