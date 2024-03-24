@@ -23,6 +23,18 @@ if (!empty($_POST['last_name'])) {
     $fields_to_update[] = "last_name = '$updated_last_name'";
 }
 
+if(!empty($_POST['bio'])) {
+    $updated_bio = $_POST['bio'];
+    $fields_to_update[] = "bio = '$updated_bio'";
+}
+
+if(empty($fields_to_update)) {
+    $response['status'] = 'error';
+    $response['message'] = 'No fields to update';
+    echo json_encode($response);
+    exit;
+}
+
 $check_id = $mysqli->prepare("SELECT id, first_name, last_name, bio FROM users WHERE id = ?");
 $check_id->bind_param('i', $id);
 $check_id->execute();
