@@ -12,7 +12,12 @@
     max-width: 30%;
     min-width: 400px;
     padding: 16px;
+    
+}
 
+.container p {
+    font-size: 16px;
+    text-align: center;
 }
 
 .validation-display {
@@ -20,10 +25,10 @@
     color: #f03e3eed;
 }
 
-.container p {
-    font-size: 18px;
-    margin: 32px;
+.validation-display > p {
+    font-size: 16px;
 }
+
 
 form {
     width: 80%;
@@ -40,7 +45,7 @@ input {
     padding: 0 16px;
     border-radius: 4px;
     border: 1px solid #ADB5BD50;
-    margin-bottom: 16px;
+    margin-bottom: 16px !important;
 }
 
 input:last-child {
@@ -52,14 +57,14 @@ input:last-child {
     width: 100%;
     padding: 12px;
     margin: 16px 0;
-    border-radius: 8px;
+    border-radius: 24px;
     cursor: pointer;
     font-size: 20px;
 }
 
 .login-btn:hover,
 .register-btn:hover {
-    background-color: #202B32;
+    background-color: #004182;
 }
 
 .welcome-message {
@@ -70,5 +75,6 @@ input:last-child {
 
 .register-link:hover,
 .login-link:hover {
-    color: #849f98;
+    color: #0077b5;
+    cursor: pointer;
 }

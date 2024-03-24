@@ -1,8 +1,7 @@
 import { React, useState } from 'react';
 
-const SignupForm = ({ switchHandler, handleSignup, validation }) => {
+const SignupForm = ({ switchHandler, handleSignup, validationError }) => {
     const [formData, setFormData] = useState({
-        username: '',
         email: '',
         password: '',
     });
@@ -16,15 +15,11 @@ const SignupForm = ({ switchHandler, handleSignup, validation }) => {
         handleSignup(formData);
     };
     return (
-        <div className="container box-shadow-l off-white-bg border flex center column">
+        <div className="container box-shadow off-white-bg border flex center column">
             <div className="logo">
                 <img src="/assets/logo.png" alt="logo" />
             </div>
             <form className="flex center column" onSubmit={handleSubmit}>
-                <div>
-                    <label>Username:</label>
-                    <input type="text" name="username" placeholder="username" required onChange={handleChange} />
-                </div>
                 <div>
                     <label>Email:</label>
                     <input type="text" name="email" placeholder="user@email.com" required onChange={handleChange} />
@@ -33,9 +28,9 @@ const SignupForm = ({ switchHandler, handleSignup, validation }) => {
                     <label>Password:</label>
                     <input type="password" name="password" placeholder="password" required onChange={handleChange} />
                 </div>
-                {validation && (
+                {validationError && (
                     <div className="flex center validation-display">
-                        <p>{validation}</p>
+                        <p>{validationError}</p>
                     </div>
                 )}
                 <button className="register-btn primary-bg white-text box-shadow" type="submit">

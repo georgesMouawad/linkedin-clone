@@ -1,4 +1,4 @@
-import { useState , useEffect } from 'react';
+import { useState } from 'react';
 // import axios from 'axios';
 
 import LoginForm from './forms/LoginForm';
@@ -7,20 +7,6 @@ import './authentication.css';
 
 const Authentication = () => {
     const [isLogin, setIsLogin] = useState(true);
-    // const [error, setError] = useState(null);
-
-    // useEffect(() => {
-    //     if (Object.keys(formData).length === 0) return;
-
-
-    //     if (!formData.email.includes('@') || !formData.email.includes('.')) {
-    //         setError('Invalid email address');
-    //     } else if (formData.password.length < 8) {
-    //         setError('Password must be at least 8 characters long');
-    //     } else {
-    //         setError(null);
-    //     } 
-    // }, [formData])
 
     const switchHandler = (isLogin) => {
         setIsLogin(isLogin);
@@ -49,7 +35,7 @@ const Authentication = () => {
     return (
         <section className="form-component white-bg flex center">
             {isLogin ? (
-                <LoginForm switchHandler={switchHandler} handleLogin={handleLogin}  />
+                <LoginForm switchHandler={switchHandler} handleLogin={handleLogin} />
             ) : (
                 <SignupForm switchHandler={switchHandler} handleSignup={handleSignup} />
             )}
