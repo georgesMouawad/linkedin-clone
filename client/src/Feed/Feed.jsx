@@ -17,10 +17,45 @@ const Feed = ({currentUserId}) => {
     const [input, setInput] = useState('');
     const [posts, setPosts] = useState([]);
 
-    useEffect(() => {
-        //fetch posts
-        //setPosts
-    }, []);
+    // useEffect(() => {
+    //     // Fetch posts from API
+    //     // Example API call:
+    //     // fetch('your-api-endpoint')
+    //     //     .then(response => response.json())
+    //     //     .then(data => setPosts(data));
+    // }, []); // Empty dependency array to fetch data only once
+
+    // const getUserData = (user_id) => {
+    //     // Fetch user data from API based on user_id
+    //     // Example API call:
+    //     // fetch(`your-api-endpoint/${user_id}`)
+    //     //     .then(response => response.json())
+    //     //     .then(data => return data);
+    //     return {
+    //         name: 'John Wayne',
+    //         email: 'john@mail.com',
+    //         connections: '4'
+    //     };
+    // };
+
+    // const sendPost = (event) => {
+    //     event.preventDefault();
+    //     // Send post to API instead of updating local state
+    //     // Example API call:
+    //     // fetch('your-api-endpoint', {
+    //     //     method: 'POST',
+    //     //     body: JSON.stringify({ name: getUserData(currentUserId).name, description: input }),
+    //     //     headers: {
+    //     //         'Content-Type': 'application/json'
+    //     //     }
+    //     // })
+    //     // .then(response => response.json())
+    //     // .then(data => {
+    //     //     // Update state if necessary
+    //     //     setPosts([...posts, data]);
+    //     // });
+    //     setInput('');
+    // };
 
 
     const getUserData = (user_id) => {
@@ -32,8 +67,8 @@ const Feed = ({currentUserId}) => {
         }
     };
 
-    const sendPost = (e) => {
-        e.preventDefault();
+    const sendPost = (event) => {
+        event.preventDefault();
         //link and set input as message
         // setPosts([...posts, { name:input, description: message: input }]);
         console.log(currentUserId,input);
@@ -65,7 +100,9 @@ const Feed = ({currentUserId}) => {
                     </div>
                 </div>
                 <div className="posts-container">
-                    <Post />
+                {posts.length > 1 && posts.map((post) => {
+                    return <Post posterName={post.name} message={post.description} date={new Date().toUTCString()} />
+                })}
                 </div>
             </div>
             <div className="right-section border-radius white-bg border box-shadow">
@@ -73,16 +110,7 @@ const Feed = ({currentUserId}) => {
                 {/* map through several user from users and pass as props 
                 to <FollowCard/>*/}
             </div>
-
-            {posts.map((post) => (
-                    <FollowCard user_id={post.name} message={post.message} />
-                )) }
                 
-            {/* map through posts desturcture and pass as props */}
-            {/* 
-            {posts.map((post) => (
-                <Post />
-            ))} */}
         </div>
     );
 };
