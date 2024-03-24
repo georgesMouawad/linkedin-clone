@@ -41,7 +41,7 @@ const App = () => {
                         path="/profile"
                         element={
                             isAuthenticated ? (
-                                <Profile user_id={4} />
+                                <Profile user_id={currentUser?.id} />
                             ) : (
                                 <Authentication onLogin={() => setIsAuthenticated(true)} />
                             )

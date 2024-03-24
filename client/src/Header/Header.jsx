@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import HeaderOption from './HeaderOption/HeaderOption';
 import './header.css';
@@ -11,8 +10,7 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
 
 const Header = () => {
-    const navigate = useNavigate();
-    
+   
     return (
         <header className='white-bg flex center'>
             <div className="navbar flex space-between">
@@ -25,10 +23,10 @@ const Header = () => {
                 </div>
             </div>
             <div className="header-right flex">
-                <HeaderOption Icon={HomeIcon} title="Home" />
+                <HeaderOption Icon={HomeIcon} title="Home"/>
                 <HeaderOption Icon={SupervisorAccountIcon} title="Network" />
                 <HeaderOption Icon={BusinessCenterIcon} title="Jobs" />
-                <HeaderOption title="Me" onClick={() => navigate('/profile')}/>
+                <HeaderOption title="Me"/>
             </div>
             </div>
         </header>

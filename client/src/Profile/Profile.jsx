@@ -4,7 +4,7 @@ import axios from 'axios';
 import './profile.css';
 
 import { Avatar } from '@mui/material';
-// import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit';
 
 const Profile = ({ user_id }) => {
     const [profileData, setProfileData] = useState(null);
@@ -13,6 +13,8 @@ const Profile = ({ user_id }) => {
     const [skills, setSkills] = useState(null);
     const [followers, setFollowers] = useState(null);
     const [occupation, setOccupation] = useState(null);
+
+    // const [showEditPopup, setShowEditPopup] = useState(false);
 
     useEffect(() => {
         const getProfile = async () => {
@@ -30,7 +32,6 @@ const Profile = ({ user_id }) => {
                 setSkills(skillsResponse.data.data);
                 setFollowers(followersResponse.data.data);
                 setOccupation(occupationResponse.data.data);
-                
             } catch (error) {
                 console.log(error.message);
             }
@@ -80,6 +81,22 @@ const Profile = ({ user_id }) => {
         );
     };
 
+    const HeaderTop = ({ headername }) => {
+        return (
+            <div className="top flex space-between">
+                <h3>{headername}</h3>
+                {isOwnProfile && <EditIcon className="edit dark-text"/>}
+            </div>
+        );
+    };
+
+    // const toggleEditPopup = () => {
+    //     return 
+    // }
+
+    const loggedUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isOwnProfile = loggedUser?.id === user_id;
+
     return (
         <div className="profile flex column light-gray-bg">
             <div className="profile-header border-radius border white-bg">
@@ -93,27 +110,27 @@ const Profile = ({ user_id }) => {
                     <h5>
                         Connections <span>{followers?.total_following}</span>
                     </h5>
-                    {<button className="profile-button white-text">Connect</button>}
+                    {!isOwnProfile && <button className="profile-button white-text">Connect</button>}
                 </div>
             </div>
             <div className="profile-section border-radius border white-bg">
-                <h3>About</h3>
+                <HeaderTop headername={'About'} />
                 <p>{profileData?.bio}</p>
             </div>
             <div className="profile-section border-radius border white-bg">
-                <h3>Experience</h3>
+                <HeaderTop headername={'Experience'} />
                 {experienceHistory?.map((experience) => (
                     <Experience key={experience.id} experience={experience} />
                 ))}
             </div>
             <div className="profile-section border-radius border white-bg">
-                <h3>Education</h3>
+                <HeaderTop headername={'Education'} />
                 {educationHistory?.map((education) => (
                     <Education key={education.id} education={education} />
                 ))}
             </div>
             <div className="profile-section border-radius border white-bg">
-                <h3>Skills</h3>
+                <HeaderTop headername={'Skills'} />
                 {skills?.map((skill) => (
                     <Skill key={skill.id} skill={skill} />
                 ))}
