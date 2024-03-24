@@ -11,13 +11,10 @@ if(empty($_POST['email']) || empty($_POST['password'])) {
 
 $email = $_POST['email'];
 $password = $_POST['password'];
-$isCompany = $_POST['isCompany'];
 
-if($isCompany) {
-    $query = $mysqli->prepare("SELECT * WHERE email = ?");
-} else {
-    $query = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
-}
+!empty($_POST['is_company']) ? $is_company = $_POST['is_company'] : $is_company = false;
+
+$is_company ? $query = $mysqli->prepare("SELECT * FROM companies WHERE email = ?") : $query = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
 
 $query->bind_param('s', $email);
 $query->execute();
@@ -30,7 +27,7 @@ if($query->num_rows > 0) {
 } else {
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-    if($isCompany) {
+    if($is_company) {
         $query = $mysqli->prepare("INSERT INTO companies (email, password) VALUES (?, ?)");
     } else {
         $query = $mysqli->prepare("INSERT INTO users (email, password) VALUES (?, ?)");

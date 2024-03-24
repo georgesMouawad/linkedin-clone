@@ -2,37 +2,51 @@
 
 include('../connection.php');
 
-if (empty($_POST['id']) || empty($_POST['bio'])) {
+if (empty($_POST['id'])) {
     $response['status'] = 'error';
-    $response['message'] = 'Please fill all the fields';
+    $response['message'] = 'ID is required';
     echo json_encode($response);
     exit;
 }
 
 $id = $_POST['id'];
-$bio = $_POST['bio'];
 
-$check_id = $mysqli->prepare("SELECT id,bio FROM users WHERE id = ?");
+$fields_to_update = [];
+
+if (!empty($_POST['first_name'])) {
+    $updated_first_name = $_POST['first_name'];
+    $fields_to_update[] = "first_name = '$updated_first_name'";
+}
+
+if (!empty($_POST['last_name'])) {
+    $updated_last_name = $_POST['last_name'];
+    $fields_to_update[] = "last_name = '$updated_last_name'";
+}
+
+$check_id = $mysqli->prepare("SELECT id, first_name, last_name, bio FROM users WHERE id = ?");
 $check_id->bind_param('i', $id);
 $check_id->execute();
 $check_id->store_result();
 
-if($query->num_rows > 0) {
-    $query = $mysqli->prepare("UPDATE users SET bio = ? WHERE id = ?");
-    $query->bind_param('si', $bio, $id);
+if($check_id->num_rows > 0) {
+    $update_query = "UPDATE users SET " . implode(', ', $fields_to_update) . " WHERE id = $id";
+    $query = $mysqli->prepare($update_query);
     $query->execute();
 
     $check_id->execute();
     $check_id->store_result();
-    $check_id->bind_result($id, $bio);
+    $check_id->bind_result($id, $first_name, $last_name, $bio);
+    $check_id->fetch();
 
     $response['status'] = 'success';
-    $response['message'] = 'Bio updated';
+    $response['message'] = 'User updated';
     $response['data'] = [
         'id' => $id,
+        'first_name' => $first_name,
+        'last_name' => $last_name,
         'bio' => $bio
     ];
-    
+
 } else {
     $response['status'] = 'error';
     $response['message'] = 'User not found';

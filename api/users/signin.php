@@ -14,7 +14,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
 }
 
 $query = $mysqli->prepare("SELECT id, CONCAT(first_name, ' ', last_name) AS name, email, password FROM users WHERE email = ? UNION SELECT id, name, email, password FROM companies WHERE email = ?");
-$query->bind_param('s', $email);
+$query->bind_param('ss', $email, $email);
 $query->execute();
 $query->store_result();
 
