@@ -28,7 +28,7 @@ const FollowCard = ({ user_id }) => {
 
 
     return (<div className="follow">
-    <div className="follow-card flex center">
+    <div className="follow-card flex">
         {!imageUrl ? <Avatar className='avatar'/> : <img src={imageUrl} alt="profile" className='avatar' />}
         <div className="follow-card-info">
             <h4>{name}</h4>

@@ -1,10 +1,13 @@
 .feed {
-    padding: 32px;
-    width: 100%;
+    width: 1000px;
+    margin: 0 auto;
 }
 
-.feed-input-container {
+.feed-main {
     flex: 0.6;
+    padding: 16px;
+}
+.feed-input-container {
     padding: 12px;
     margin-bottom: 16px;
 }
@@ -31,3 +34,14 @@
     display: none;
 }
 
+.right-section {
+    flex: 0.2;
+    padding: 16px;
+    margin-top: 16px;
+    height: fit-content;
+}
+
+.right-section h3 {
+    font-size: 18px;
+    margin-bottom: 16px;
+}

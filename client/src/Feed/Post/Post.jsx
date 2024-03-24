@@ -6,7 +6,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import SendIcon from '@mui/icons-material/Send';
 
 const Post = ({name, description, message, photoUrl}) => {
-    return <div className="post border-radius">
+    return <div className="post border-radius box-shadow border">
         <div className="post-header flex">
             <Avatar/>
             <div className="post-info">

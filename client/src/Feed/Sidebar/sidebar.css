@@ -4,6 +4,7 @@
     flex: 0.2;
     text-align: center;
     height: fit-content;
+    margin-top: 16px;
 }
 
 .sidebar-avatar {
@@ -37,9 +38,6 @@
 
 .sidebar-stats {
     padding: 12px;
-    margin-bottom: 12px;
-    background-color: white;
-    border: 1p solid lightgray;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 }

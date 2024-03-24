@@ -9,12 +9,13 @@ header {
 
 .header-left img {
     object-fit: contain;
-    height: 40px;
+    height: 36px;
     margin-right: 12px;
     cursor: pointer;
 }
 
 .header-search {
+    height: 36px;
     padding-left: 8px;
     background-color: #eef3f8;
 }

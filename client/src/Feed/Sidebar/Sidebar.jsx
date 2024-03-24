@@ -12,22 +12,19 @@ const Sidebar = ({ name, email, connections }) => {
     // };
 
     return (
-        <div className="sidebar border-radius">
+        <div className="sidebar flex column border-radius border box-shadow">
             <div className="sidebar-top flex column center white-bg">
                 <img src="/assets/bg.jpg" alt="background" />
                 <Avatar className="sidebar-avatar" />
                 <h2>Welcome, {name}</h2>
                 <h4>{email}</h4>
             </div>
-            <div className="sidebar-stats">
+            <div className="sidebar-stats white-bg">
                 <div className="sidebar-stat flex space-between">
                     <p>Connections</p>
                     <p className="sidebar-statnumber">{connections.length}</p>
                 </div>
             </div>
-            {/* <div className="sidebar-bottom flex column">
-                <p>Recent</p>
-            </div> */}
         </div>
     );
 };

@@ -36,10 +36,10 @@ const Feed = () => {
     };
 
     return (
-        <div className="feed flex space-evenly">
+        <div className="feed flex">
             <Sidebar name={name} email={email} connections={connections} />
-            <div className="main">
-                <div className="feed-input-container border-radius white-bg">
+            <div className="feed-main">
+                <div className="feed-input-container border-radius white-bg box-shadow border">
                     <div className="feed-input flex border border-radius-l">
                         <CreateIcon />
                         <form className="flex">
@@ -63,8 +63,8 @@ const Feed = () => {
                     />
                 </div>
             </div>
-            <div className="right-section border-radius">
-                <h3>Add to your feed</h3>
+            <div className="right-section border-radius white-bg border box-shadow">
+                <h3 className='dark-text'>Add to your feed</h3>
                 {/* map through several user from users and pass as props 
                 to <FollowCard/>*/}
 

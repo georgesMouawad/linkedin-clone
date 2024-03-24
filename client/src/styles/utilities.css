@@ -87,7 +87,7 @@ button {
 }
 
 .box-shadow {
-    box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.05);
 }
 
 .box-shadow-l {
@@ -95,7 +95,7 @@ button {
 }
 
 .border {
-    border: 1px solid #f4f2ee;
+    border: 1px solid whitesmoke;
 }
 
 .border-dark {
