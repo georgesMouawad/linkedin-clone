@@ -5,19 +5,20 @@ include('../connection.php');
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
 
-    $query = $mysqli->prepare("SELECT id, CONCAT(first_name, ' ', last_name) AS name, email, bio FROM users WHERE id = ?");
+    $query = $mysqli->prepare("SELECT id, first_name, last_name, email, bio FROM users WHERE id = ?");
     $query->bind_param('i', $id);
     $query->execute();
     $query->store_result();
 
     if($query->num_rows > 0) {
-        $query->bind_result($id, $name, $email, $bio);
+        $query->bind_result($id, $first_name, $last_name, $email, $bio);
         $query->fetch();
 
         $response['status'] = 'success';
         $response['data'] = [
             'id' => $id,
-            'name' => $name,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
             'email' => $email,
             'bio' => $bio
         ];

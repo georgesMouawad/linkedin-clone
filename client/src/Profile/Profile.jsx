@@ -1,10 +1,46 @@
-import { Avatar } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import './profile.css';
 
-const Profile = ({ first_name, last_name, bio, occupation, location, connections, experiences, educations, skills }) => {
-    const Experience = ({ position, company, startDate, endDate, logoUrl }) => {
+import { Avatar } from '@mui/material';
+// import EditIcon from '@mui/icons-material/Edit';
+
+const Profile = ({ user_id }) => {
+    const [profileData, setProfileData] = useState(null);
+    const [educationHistory, setEducationHistory] = useState(null);
+    const [experienceHistory, setExperienceHistory] = useState(null);
+    const [skills, setSkills] = useState(null);
+    const [followers, setFollowers] = useState(null);
+    const [occupation, setOccupation] = useState(null);
+
+    useEffect(() => {
+        const getProfile = async () => {
+            try {
+                const profileDataResponse = await axios.get('/users/get.php?id=' + user_id);
+                const educationHistoryResponse = await axios.get('/educations/get.php?user_id=' + user_id);
+                const experienceHistoryResponse = await axios.get('/experiences/get.php?user_id=' + user_id);
+                const skillsResponse = await axios.get('/skills/get.php?user_id=' + user_id);
+                const followersResponse = await axios.get('/followers/get.php?user_id=' + user_id);
+                const occupationResponse = await axios.get('/experiences/getcurrent.php?user_id=' + user_id);
+
+                setProfileData(profileDataResponse.data.data);
+                setEducationHistory(educationHistoryResponse.data.data);
+                setExperienceHistory(experienceHistoryResponse.data.data);
+                setSkills(skillsResponse.data.data);
+                setFollowers(followersResponse.data.data);
+                setOccupation(occupationResponse.data.data);
+                
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
+
+        getProfile();
+    }, [user_id]);
+
+    const Experience = ({ experience }) => {
+        const { position, company, start_date, end_date } = experience;
         return (
             <div className="info-section flex">
                 <img src="/assets/company.png" alt="" />
@@ -12,23 +48,24 @@ const Profile = ({ first_name, last_name, bio, occupation, location, connections
                     <h4 className="dark-text">{position}</h4>
                     <h5 className="light-text">{company}</h5>
                     <h5 className="light-text">
-                        {startDate} - {endDate}
+                        {start_date} - {end_date ? end_date : 'Present'}
                     </h5>
                 </div>
             </div>
         );
     };
 
-    const Education = ({ school, degree, field, startDate, endDate }) => {
+    const Education = ({ education }) => {
+        const { school, degree, field_of_study, start_date, end_date } = education;
         return (
             <div className="info-section flex">
                 <img src="/assets/school.png" alt="" />
                 <div className="text">
                     <h4 className="dark-text">{degree}</h4>
                     <h5 className="light-text">{school}</h5>
-                    <h5 className="light-text">{field}</h5>
+                    <h5 className="light-text">{field_of_study}</h5>
                     <h5 className="light-text">
-                        {startDate} - {endDate}
+                        {start_date} - {end_date ? end_date : 'Present'}
                     </h5>
                 </div>
             </div>
@@ -38,7 +75,7 @@ const Profile = ({ first_name, last_name, bio, occupation, location, connections
     const Skill = ({ skill }) => {
         return (
             <div className="skills flex column">
-                    <h4 className="dark-text">{skill}</h4>
+                <h4 className="dark-text">{skill.skill}</h4>
             </div>
         );
     };
@@ -50,46 +87,35 @@ const Profile = ({ first_name, last_name, bio, occupation, location, connections
                 <Avatar className="profile-avatar" />
                 <div className="profile-info">
                     <h2>
-                        {first_name} {last_name}
+                        {profileData?.first_name} {profileData?.last_name}
                     </h2>
-                    <h4>{occupation}</h4>
-                    <h5>{location}</h5>
-                    <h5>Connections <span>{connections.length}</span></h5>
-                    <button className="profile-button white-text">Connect</button>
+                    <h4>{occupation?.position}</h4>
+                    <h5>
+                        Connections <span>{followers?.total_following}</span>
+                    </h5>
+                    {<button className="profile-button white-text">Connect</button>}
                 </div>
             </div>
             <div className="profile-section border-radius border white-bg">
                 <h3>About</h3>
-                <p>{bio}</p>
+                <p>{profileData?.bio}</p>
             </div>
             <div className="profile-section border-radius border white-bg">
                 <h3>Experience</h3>
-                {experiences.map((experience) => (
-                    <Experience
-                        position={experience.position}
-                        company={experience.company}
-                        startDate={experience.startDate}
-                        endDate={experience.endDate}
-                        logoUrl={experience.logoUrl}
-                    />
+                {experienceHistory?.map((experience) => (
+                    <Experience key={experience.id} experience={experience} />
                 ))}
             </div>
             <div className="profile-section border-radius border white-bg">
                 <h3>Education</h3>
-                {educations.map((education) => (
-                    <Education
-                        school={education.school}
-                        degree={education.degree}
-                        field={education.field}
-                        startDate={education.startDate}
-                        endDate={education.endDate}
-                    />
+                {educationHistory?.map((education) => (
+                    <Education key={education.id} education={education} />
                 ))}
             </div>
             <div className="profile-section border-radius border white-bg">
                 <h3>Skills</h3>
-                {skills.map((skill) => (
-                    <Skill skill={skill} />
+                {skills?.map((skill) => (
+                    <Skill key={skill.id} skill={skill} />
                 ))}
             </div>
         </div>

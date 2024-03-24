@@ -8,12 +8,8 @@ const LoginForm = ({ switchHandler, handleLogin }) => {
 
     useEffect(() => {
         if (!submitted) return;
-        if (!formdata.email || !formdata.password === 0) {
-            setValidationError('All fields are required');
-        } else if (!formdata.email.includes('@') || !formdata.email.includes('.')) {
-            setValidationError('Invalid email address');
-        } else if (formdata.password.length < 8) {
-            setValidationError('Password must be at least 8 characters long');
+        if (!formdata.email || !formdata.password) {
+            setValidationError('Please enter your credentials');
         } else {
             setValidationError(null);
         }
@@ -22,7 +18,7 @@ const LoginForm = ({ switchHandler, handleLogin }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setSubmitted(true);
-        handleLogin(formdata);
+        !validationError && handleLogin(formdata);
     };
 
     const handleChange = (e) => {
@@ -41,7 +37,7 @@ const LoginForm = ({ switchHandler, handleLogin }) => {
             <form className="flex column" onSubmit={handleSubmit}>
                 <div>
                     <label>Email:</label>
-                    <input type="text" name="email" placeholder="email" onChange={handleChange} />
+                    <input type="text" name="email" placeholder="user@mail.com" onChange={handleChange} />
                 </div>
                 <div>
                     <label>Password:</label>
