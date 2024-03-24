@@ -1,4 +1,6 @@
 import { Avatar } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+
 import './profile.css';
 
 const Profile = ({ first_name, last_name, bio, occupation, location, connections, experiences, educations, skills }) => {

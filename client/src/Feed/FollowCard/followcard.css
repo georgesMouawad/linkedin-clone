@@ -1,0 +1,37 @@
+.follow {
+    margin-bottom: 12px;
+}
+
+.follow-card {
+    margin: 8px 0;
+}
+
+.follow-card p {
+    font-size: 12px;
+}
+
+.avatar {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+}
+
+.follow-btn {
+    width:auto;
+    color: #0a66c2;
+    border: 1px solid #0a66c2;
+    border-radius: 20px;
+    padding: 4px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.follow-btn:hover {
+    background-color: #e1f0f5;
+}
+
+.follow-btn span {
+    padding-right: 8px
+}

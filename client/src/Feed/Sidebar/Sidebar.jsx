@@ -1,6 +1,5 @@
 import { Avatar } from '@mui/material';
 import './sidebar.css';
-import '../styles/utilities.css';
 
 const Sidebar = ({ name, email, connections }) => {
     // const recentItem = (topic) => {
