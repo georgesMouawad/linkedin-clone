@@ -11,7 +11,8 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
 const Header = () => {
     return (
-        <header className="flex space-evenly white-bg">
+        <header className='white-bg flex center'>
+            <div className="navbar flex space-between">
             <div className="header-left flex center">
                 <img src="/assets/logo.png" alt="logo" />
                 <div className="header-search flex center dark-text">
@@ -25,6 +26,7 @@ const Header = () => {
                 <HeaderOption Icon={SupervisorAccountIcon} title="Network" />
                 <HeaderOption Icon={BusinessCenterIcon} title="Jobs" />
                 <HeaderOption title="Me" />
+            </div>
             </div>
         </header>
     );

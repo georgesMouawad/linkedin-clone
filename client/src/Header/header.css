@@ -7,6 +7,10 @@ header {
     z-index: 999;
 }
 
+.navbar {
+    width: 1000px;
+}
+
 .header-left img {
     object-fit: contain;
     height: 36px;

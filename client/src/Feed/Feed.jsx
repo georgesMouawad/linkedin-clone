@@ -10,13 +10,9 @@ import EventNotIcon from '@mui/icons-material/EventNote';
 import CalendarViewDayIcon from '@mui/icons-material/CalendarViewDay';
 import Post from './Post/Post';
 
-import AddIcon from '@mui/icons-material/Add';
 import FollowCard from './FollowCard/FollowCard';
 
-const Feed = () => {
-    const name = 'John Doe';
-    const email = 'john.doe@example.com';
-    const connections = ['Alice', 'Bob', 'Charlie'];
+const Feed = ({currentUserId}) => {
 
     const [input, setInput] = useState('');
     const [posts, setPosts] = useState([]);
@@ -26,14 +22,27 @@ const Feed = () => {
         //setPosts
     }, []);
 
+
+    const getUserData = (user_id) => {
+        //fetch user data from user_id API call
+        return {
+            name: 'John Wayne',
+            email: 'john@mail.com',
+            connections: '4'
+        }
+    };
+
     const sendPost = (e) => {
         e.preventDefault();
         //link and set input as message
-        setPosts([...posts]);
-
+        // setPosts([...posts, { name:input, description: message: input }]);
+        console.log(currentUserId,input);
+        setPosts([...posts, { name: getUserData(currentUserId).name , description: input}]);
         setInput('');
-        e.target.reset();
     };
+
+    const {name, email, connections} = getUserData(currentUserId);
+
 
     return (
         <div className="feed flex">
@@ -56,21 +65,19 @@ const Feed = () => {
                     </div>
                 </div>
                 <div className="posts-container">
-                    <Post
-                        name={'How to lose 100 bucks'}
-                        description={'This post will make you learn how to lose your money on job applicaitons'}
-                        message={'Please ignore the message from this post'}
-                    />
+                    <Post />
                 </div>
             </div>
             <div className="right-section border-radius white-bg border box-shadow">
-                <h3 className='dark-text'>Add to your feed</h3>
+                <h3 className="dark-text">Add to your feed</h3>
                 {/* map through several user from users and pass as props 
                 to <FollowCard/>*/}
-
-                <FollowCard user_id={1} />
-                
             </div>
+
+            {posts.map((post) => (
+                    <FollowCard user_id={post.name} message={post.message} />
+                )) }
+                
             {/* map through posts desturcture and pass as props */}
             {/* 
             {posts.map((post) => (

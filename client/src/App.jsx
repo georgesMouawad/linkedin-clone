@@ -11,6 +11,7 @@ import './styles/colors.css';
 
 const App = () => {
     const mockData = {
+        id: '1',
         first_name: 'John',
         last_name: 'Doe',
         bio: 'Software Engineer with 5 years of experience in building web applications.',
@@ -50,7 +51,7 @@ const App = () => {
             <Header />
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Feed />} />
+                    <Route path="/" element={<Feed currentUserId={mockData.id} />} />
                     <Route path="/auth" element={<Authentication />} />
                     <Route
                         path="/profile"
