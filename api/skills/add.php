@@ -2,7 +2,7 @@
 
 include('../connection.php');
 
-if(empty($_POST['skill']) || empty($_POST['user_id'])) {
+if(empty($_POST['skill']) || empty($_POST['id'])) {
     $response['status'] = 'error';
     $response['message'] = 'Missing required fields';
     echo json_encode($response);
@@ -10,7 +10,7 @@ if(empty($_POST['skill']) || empty($_POST['user_id'])) {
 }
 
 $skill = $_POST['skill'];
-$user_id = $_POST['user_id'];
+$user_id = $_POST['id'];
 
 $check_user_id = $mysqli->prepare("SELECT * FROM users WHERE id = ?");
 $check_user_id->bind_param('i', $user_id);
@@ -32,8 +32,14 @@ if($check_user_id->num_rows > 0 )
         $add_skill->bind_param('si', $skill, $user_id);
         $add_skill->execute();
 
+        $id = $mysqli->insert_id;
+
         $response['status'] = 'success';
         $response['message'] = 'Skill added';
+        $response['data'] = [
+            'id' => $id,
+            'skill' => $skill,
+        ];
     }
 }
 

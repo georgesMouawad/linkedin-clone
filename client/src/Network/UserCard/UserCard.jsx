@@ -46,7 +46,7 @@ const UserCard = ({ user }) => {
                 <img src="/assets/bg.jpg" alt="background" />
             </div>
             <div className="profile-details flex column space-around">
-                <Avatar className="profile-avatar" />
+                <Avatar className="profile-avatar-card" />
                 <div className="profile-text flex column center">
                     <h3>{name}</h3>
                     <p>{userOccupation}</p>

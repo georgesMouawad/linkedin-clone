@@ -2,14 +2,14 @@
 
 include('../connection.php');
 
-if (empty($_POST['user_id']) || empty($_POST['school']) || empty($_POST['degree']) || empty($_POST['field_of_study']) || empty($_POST['start_date'])) {
+if (empty($_POST['id']) || empty($_POST['school']) || empty($_POST['degree']) || empty($_POST['field_of_study']) || empty($_POST['start_date'])) {
     $response['status'] = 'error';
     $response['message'] = 'Missing required fields';
     echo json_encode($response);
     exit;
 }
 
-$user_id = $_POST['user_id'];
+$user_id = $_POST['id'];
 $school = $_POST['school'];
 $degree = $_POST['degree'];
 $field_of_study = $_POST['field_of_study'];

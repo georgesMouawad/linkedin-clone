@@ -9,7 +9,7 @@
 }
 
 .profile-header > img {
-    margin-bottom: 32px !important;
+    margin-bottom: -24px!important;
     object-fit: cover;
     width: 100%;
     height: 200px;
@@ -19,6 +19,7 @@
 
 .profile-avatar {
     margin-left: 64px!important;
+
     scale: 3;
 }
 

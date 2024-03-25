@@ -3,6 +3,7 @@
     height: 300px;
     width: 200px;
     justify-content: space-between;
+    position: relative;
 }
 
 .bg-img > img{
@@ -13,16 +14,14 @@
     border-top-right-radius: 8px;
 }
 
-.profile-avatar {
-    margin-top: -64px;
-    margin-left: 0;
+.profile-avatar-card {
+    position: absolute;
+    top: 0%;
+    left: 25%;
+    transform: translate(-50%, -50%);
     scale: 2.5;
 }
 
-.profile-text {
-
-    margin-top: 32px;
-}
 
 .profile-text > p {
     text-align: center;

@@ -23,7 +23,7 @@ const Profile = () => {
     const isCompany = searchParams.get('isCompany');
 
     const loggedUser = JSON.parse(localStorage.getItem('currentUser'));
-    const isOwnProfile = loggedUser?.id === user_id;
+    const isOwnProfile = loggedUser.id === parseInt(user_id);
 
     useEffect(() => {
         const getProfile = async () => {
@@ -162,37 +162,66 @@ const Profile = () => {
             setShowForm(true);
         };
 
-        const handleFormSubmit = (formData) => {
+        const handleFormSubmit = async (formData) => {
             const data = new FormData();
+            let postUrl = '';
 
             switch (headername) {
                 case 'About':
-                    data.append('user_id', user_id);
+                    data.append('id', user_id);
                     data.append('first_name', formData.first_name);
                     data.append('last_name', formData.last_name);
                     data.append('bio', formData.bio);
+
+                    postUrl = '/users/update.php';
+
                     break;
                 case 'Experience':
-                    data.append('user_id', user_id);
+                    data.append('id', user_id);
                     data.append('position', formData.position);
                     data.append('company', formData.company);
                     data.append('start_date', formData.start_date);
                     data.append('end_date', formData.end_date);
+
+                    postUrl = '/experiences/add.php';
+
                     break;
                 case 'Education':
-                    data.append('user_id', user_id);
+                    data.append('id', user_id);
                     data.append('school', formData.school);
                     data.append('degree', formData.degree);
                     data.append('field_of_study', formData.field_of_study);
                     data.append('start_date', formData.start_date);
                     data.append('end_date', formData.end_date);
+
+                    postUrl = '/educations/add.php';
+
                     break;
                 case 'Skills':
-                    data.append('user_id', user_id);
+                    data.append('id', user_id);
                     data.append('skill', formData.skill);
+
+                    postUrl = '/skills/add.php';
+
                     break;
                 default:
                     break;
+            }
+
+            try {
+                const response = await axios.post(postUrl, data)
+
+                if (headername === 'About') {
+                    setProfileData(response.data.data);
+                } else if (headername === 'Experience') {
+                    setExperienceHistory([...experienceHistory, response.data.data]);
+                } else if (headername === 'Education') {
+                    setEducationHistory([...educationHistory, response.data.data]);
+                } else if (headername === 'Skills') {
+                    setSkills([...skills, response.data.data]);
+                }
+            } catch (error) {
+                console.log(error.message);
             }
 
             setShowForm(false);
@@ -206,7 +235,6 @@ const Profile = () => {
             <div className="top flex space-between">
                 <h3>{headername}</h3>
                 {isOwnProfile && <AddIcon className="edit dark-text" onClick={handleAddClick} />}
-                {/* Pass down showForm, onSubmit, and onCancel as props to AddForm */}
                 {showForm && (
                     <AddForm
                         formType={headername === 'About' ? 'Edit Profile' : `Add ${headername}`}
@@ -266,14 +294,14 @@ const Profile = () => {
                             <HeaderTop headername={'Experience'} />
                             {experienceHistory.length > 0 &&
                                 experienceHistory.map((experience) => (
-                                    <Experience key={experience.id} experience={experience} />
+                                    <Experience key={experience?.id} experience={experience} />
                                 ))}
                         </div>
                         <div className="profile-section border-radius border white-bg">
                             <HeaderTop headername={'Education'} />
                             {educationHistory?.length > 0 &&
                                 educationHistory.map((education) => (
-                                    <Education key={education.id} education={education} />
+                                    <Education key={education?.id} education={education} />
                                 ))}
                         </div>
                         <div className="profile-section border-radius border white-bg">

@@ -38,8 +38,8 @@ const AddForm = ({ formType, onSubmit, onCancel }) => {
                             <>
                                 <input type="text" placeholder="Position" name="position" onChange={handleChange} />
                                 <input type="text" placeholder="Company" name="company" onChange={handleChange} />
-                                <input type="text" placeholder="Start Date" name="start_date" onChange={handleChange} />
-                                <input type="text" placeholder="End Date" name="end_date" onChange={handleChange} />
+                                <input type="date" placeholder="Start Date" name="start_date" onChange={handleChange} />
+                                <input type="date" placeholder="End Date" name="end_date" onChange={handleChange} />
                             </>
                         )}
                         {formType === 'Add Education' && (
@@ -52,8 +52,8 @@ const AddForm = ({ formType, onSubmit, onCancel }) => {
                                     name="field_of_study"
                                     onChange={handleChange}
                                 />
-                                <input type="text" placeholder="Start Date" name="start_date" onChange={handleChange} />
-                                <input type="text" placeholder="End Date" name="end_date" onChange={handleChange} />
+                                <input type="date" placeholder="Start Date" name="start_date" onChange={handleChange} />
+                                <input type="date" placeholder="End Date" name="end_date" onChange={handleChange} />
                             </>
                         )}
                         {formType === 'Add Skills' && (
