@@ -20,7 +20,13 @@
 }
 
 .profile-text {
+
     margin-top: 32px;
+}
+
+.profile-text > p {
+    text-align: center;
+    overflow-wrap: anywhere;
 }
 
 .connect-btn {
@@ -39,5 +45,5 @@
 }
 
 .clicked {
-    
+
 }

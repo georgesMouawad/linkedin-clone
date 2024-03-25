@@ -6,12 +6,16 @@ import './usercard.css';
 
 const UserCard = ({ user }) => {
 
-    const { id, name } = user;
+    const { id, name, bio, description } = user;
     const [userOccupation, setUserOccupation] = useState('');
     
 
     useEffect(() => {
         const getCurrentOccupation = async (id) => {
+            if(!bio) {
+                setUserOccupation(description);
+                return;
+            }
             try {
                 const response = await axios.get('/experiences/getcurrent.php?user_id=' + id);
                 if (response.data.status === 'success') {
@@ -23,7 +27,7 @@ const UserCard = ({ user }) => {
         };
 
         getCurrentOccupation(id);
-    }, [id]);
+    }, [id, bio, description]);
 
     console.log(user)
     return (

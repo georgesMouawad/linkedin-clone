@@ -7,15 +7,17 @@ import './network.css';
 
 const Network = ({ user_id }) => {
     const [users, setUsers] = useState([]);
+    const [companies, setCompanies] = useState([]);
 
     useEffect(() => {
         const getUsers = async () => {
             try {
-                const response = await axios.get('/users/get.php');
-                if (response.data.status === 'success') {
-                    console.log(response.data);
-                    setUsers(response.data.data);
-                }
+                const getUsers = await axios.get('/users/get.php');
+                const getCompanies = await axios.get('/companies/get.php');
+                
+                setUsers(getUsers.data.data);
+                setCompanies(getCompanies.data.data);
+
             } catch (error) {
                 console.error(error);
             }
@@ -24,11 +26,13 @@ const Network = ({ user_id }) => {
         getUsers();
     }, []);
 
-    console.log(users);
+
+    
 
     return (
         <div className="main flex wrap">
             {users.map((user) => (user.id !== user_id ? <UserCard key={user.id} user={user} /> : null))}
+            {companies.map((company) => <UserCard key={company.id} user={company} />)}
         </div>
     );
 };

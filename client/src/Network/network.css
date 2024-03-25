@@ -1,4 +1,6 @@
 .main {
     width: 1000px;
     margin: 0 auto;
+    align-items: center;
+    justify-content: center;
 }
