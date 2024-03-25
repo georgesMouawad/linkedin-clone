@@ -7,14 +7,23 @@ import { Avatar } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddForm from './AddForm/AddForm';
+import { useSearchParams } from 'react-router-dom';
 
-const Profile = ({ user_id }) => {
+const Profile = () => {
     const [profileData, setProfileData] = useState([]);
     const [educationHistory, setEducationHistory] = useState([]);
     const [experienceHistory, setExperienceHistory] = useState([]);
     const [skills, setSkills] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [occupation, setOccupation] = useState('');
+
+    const [searchParams] = useSearchParams();
+    const user_id = searchParams.get('id');
+    const isCompany = searchParams.get('isCompany');
+
+    console.log(isCompany);
+
+    console.log(user_id);
 
     const loggedUser = JSON.parse(localStorage.getItem('currentUser'));
     const isOwnProfile = loggedUser?.id === user_id;
@@ -40,8 +49,18 @@ const Profile = ({ user_id }) => {
             }
         };
 
-        getProfile();
-    }, [user_id]);
+        const getCompanyProfile = async () => {
+            try {
+                const profileDataResponse = await axios.get('/companies/get.php?id=' + user_id);
+                const followersResponse = await axios.get('/followers/get.php?user_id=' + user_id);
+                setProfileData(profileDataResponse.data.data);
+                setFollowers(followersResponse.data.data);
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
+        isCompany ? getCompanyProfile() : getProfile();
+    }, [user_id, isCompany]);
 
     const handleDeleteClick = async (id, sectionName) => {
         const data = new FormData();
@@ -160,7 +179,7 @@ const Profile = ({ user_id }) => {
                     break;
             }
 
-            console.log(data)
+            console.log(data);
             setShowForm(false);
         };
 
@@ -184,42 +203,51 @@ const Profile = ({ user_id }) => {
         );
     };
 
-    return (
-        <div className="profile flex column light-gray-bg">
-            <div className="profile-header border-radius border white-bg">
-                <img src="/assets/bg.jpg" alt="" />
-                <Avatar className="profile-avatar" />
-                <div className="profile-info">
-                    <h2>
-                        {profileData.first_name} {profileData.last_name}
-                    </h2>
-                    <h4>{occupation.position}</h4>
-                    <h5>
-                        Connections <span>{followers.total_following}</span>
-                    </h5>
-                    {!isOwnProfile && <button className="profile-button white-text">Connect</button>}
+    if (profileData)
+        return (
+            <div className="profile flex column light-gray-bg">
+                <div className="profile-header border-radius border white-bg">
+                    <img src="/assets/bg.jpg" alt="" />
+                    <Avatar className="profile-avatar" />
+                    <div className="profile-info">
+                        <h2>
+                            {isCompany ? profileData.name : profileData.first_name + ' ' + profileData.last_name}
+                        </h2>
+                        <h4>{occupation.position}</h4>
+                        <h5>
+                            Connections: <span>{followers.total_following}</span>
+                        </h5>
+                        {!isOwnProfile && <button className="profile-button white-text">Connect</button>}
+                    </div>
                 </div>
+                <div className="profile-section border-radius border white-bg">
+                    <HeaderTop headername={'About'} />
+                    <p>{isCompany ? profileData.description : profileData.bio}</p>
+                </div>
+                {!isCompany && (
+                    <>
+                        <div className="profile-section border-radius border white-bg">
+                            <HeaderTop headername={'Experience'} />
+                            {experienceHistory.length > 0 &&
+                                experienceHistory.map((experience) => (
+                                    <Experience key={experience.id} experience={experience} />
+                                ))}
+                        </div>
+                        <div className="profile-section border-radius border white-bg">
+                            <HeaderTop headername={'Education'} />
+                            {educationHistory?.length > 0 &&
+                                educationHistory.map((education) => (
+                                    <Education key={education.id} education={education} />
+                                ))}
+                        </div>
+                        <div className="profile-section border-radius border white-bg">
+                            <HeaderTop headername={'Skills'} />
+                            {skills.length > 0 && skills.map((skill) => <Skill key={skill.id} skill={skill} />)}
+                        </div>
+                    </>
+                )}
             </div>
-            <div className="profile-section border-radius border white-bg">
-                <HeaderTop headername={'About'} />
-                <p>{profileData.bio}</p>
-            </div>
-            <div className="profile-section border-radius border white-bg">
-                <HeaderTop headername={'Experience'} />
-                {experienceHistory.length > 0 &&
-                    experienceHistory.map((experience) => <Experience key={experience.id} experience={experience} />)}
-            </div>
-            <div className="profile-section border-radius border white-bg">
-                <HeaderTop headername={'Education'} />
-                {educationHistory?.length > 0 &&
-                    educationHistory.map((education) => <Education key={education.id} education={education} />)}
-            </div>
-            <div className="profile-section border-radius border white-bg">
-                <HeaderTop headername={'Skills'} />
-                {skills.length > 0 && skills.map((skill) => <Skill key={skill.id} skill={skill} />)}
-            </div>
-        </div>
-    );
+        );
 };
 
 export default Profile;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { Avatar } from '@mui/material';
@@ -8,6 +9,8 @@ const UserCard = ({ user }) => {
 
     const { id, name, bio, description } = user;
     const [userOccupation, setUserOccupation] = useState('');
+
+    const navigate = useNavigate();
     
 
     useEffect(() => {
@@ -29,6 +32,14 @@ const UserCard = ({ user }) => {
         getCurrentOccupation(id);
     }, [id, bio, description]);
 
+    const handleOnclick = () => {
+        let url = `/profile?id=${id}`;
+        if (!bio) {
+            url += `&isCompany=true`;
+        }
+        navigate(url);
+    };
+
     return (
         <div className="user-card white-bg border border-radius flex column">
             <div className="bg-img border-radius">
@@ -41,7 +52,7 @@ const UserCard = ({ user }) => {
                     <p>{userOccupation}</p>
                 </div>
             </div>
-            <button className="connect-btn">Connect</button>
+            <button className="connect-btn" onClick={handleOnclick}>Connect</button>
         </div>
     );
 };

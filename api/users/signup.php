@@ -43,7 +43,8 @@ if($query->num_rows > 0) {
     $response['message'] = 'Signup successful';
     $response['data'] = [
         'id' => $id,
-        'email' => $email
+        'email' => $email,
+        'isCompany' => $is_company
     ];
 }
 

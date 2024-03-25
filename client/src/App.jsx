@@ -35,18 +35,12 @@ const App = () => {
                     <Route
                         path="/"
                         element={
-                            isAuthenticated ? <Feed user_id={currentUser?.id} /> : <Authentication onLogin={() => setIsAuthenticated(true)} />
+                            isAuthenticated ? <Feed /> : <Authentication onLogin={() => setIsAuthenticated(true)} />
                         }
                     />
                     <Route
                         path="/profile"
-                        element={
-                            isAuthenticated ? (
-                                <Profile user_id={currentUser?.id} />
-                            ) : (
-                                <Authentication onLogin={() => setIsAuthenticated(true)} />
-                            )
-                        }
+                        element={<Profile/>}
                     />
                     <Route path="/network" element={<Network user_id={currentUser?.id}/>} />
                 </Routes>

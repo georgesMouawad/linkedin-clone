@@ -8,14 +8,18 @@ const HeaderOption = ({ Icon, title }) => {
 
     const handleClick = () => {
         if (title === 'Me') {
-            navigate('/profile');
+            const isCompany = JSON.parse(localStorage.getItem('currentUser')).isCompany;
+            const id = JSON.parse(localStorage.getItem('currentUser')).id;
+
+            !isCompany ? navigate(`/profile?id=${id}`) : navigate(`/profile?id=${id}&isCompany=true`)
+            
         } else if (title === 'Home') {
             navigate('/');
         } else {
             navigate('/network');
         }
     };
-    
+
     return (
         <div className="headerOption flex column center" onClick={handleClick}>
             {Icon ? <Icon className="headerOption-icon" /> : <Avatar className="headerOption-icon" />}

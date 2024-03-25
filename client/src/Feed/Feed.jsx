@@ -78,7 +78,7 @@ const Feed = ({ user_id }) => {
         setInput('');
     };
 
-    return (
+    if(userData) return (
         <div className="feed flex">
             <Sidebar userData={userData} followers={followers} />
             <div className="feed-main">
