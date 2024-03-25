@@ -16,13 +16,13 @@ const Profile = () => {
     const [skills, setSkills] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [occupation, setOccupation] = useState('');
+    const [isFollowing, setIsFollowing] = useState(false);
 
     const [searchParams] = useSearchParams();
     const user_id = searchParams.get('id');
     const isCompany = searchParams.get('isCompany');
 
     console.log(isCompany);
-
     console.log(user_id);
 
     const loggedUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -59,8 +59,28 @@ const Profile = () => {
                 console.log(error.message);
             }
         };
+
+        const getFollowStatus = async () => {
+            try {
+                const response = await axios.get(
+                    '/followers/check.php?follower_id=' +
+                        loggedUser.id +
+                        '&followee_id=' +
+                        user_id +
+                        '&followee_type=' +
+                        (isCompany ? 'company' : 'user')
+                );
+
+                console.log(loggedUser.id, user_id, isCompany, response.data.data);
+                setIsFollowing(response.data.data);
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
+
         isCompany ? getCompanyProfile() : getProfile();
-    }, [user_id, isCompany]);
+        getFollowStatus();
+    }, [user_id, isCompany, loggedUser.id]);
 
     const handleDeleteClick = async (id, sectionName) => {
         const data = new FormData();
@@ -203,6 +223,22 @@ const Profile = () => {
         );
     };
 
+    const handleFollow = async (id, user_id, isCompany) => {
+        const data = new FormData();
+        data.append('follower_id', user_id);
+        data.append('followee_id', id);
+        data.append('followee_type', isCompany ? 'company' : 'user');
+
+        console.log('here', data);
+
+        try {
+            const response = await axios.post('/followers/toggle.php', data);
+            console.log(response);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
     if (profileData)
         return (
             <div className="profile flex column light-gray-bg">
@@ -210,14 +246,21 @@ const Profile = () => {
                     <img src="/assets/bg.jpg" alt="" />
                     <Avatar className="profile-avatar" />
                     <div className="profile-info">
-                        <h2>
-                            {isCompany ? profileData.name : profileData.first_name + ' ' + profileData.last_name}
-                        </h2>
+                        <h2>{isCompany ? profileData.name : profileData.first_name + ' ' + profileData.last_name}</h2>
                         <h4>{occupation.position}</h4>
                         <h5>
                             Connections: <span>{followers.total_following}</span>
                         </h5>
-                        {!isOwnProfile && <button className="profile-button white-text">Connect</button>}
+                        {!isOwnProfile && (
+                            <>
+                                <button
+                                    className={`profile-button ${isFollowing ? 'clicked' : ''}`}
+                                    onClick={handleFollow}
+                                >
+                                    {isFollowing ? 'Following' : 'Follow'}
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
                 <div className="profile-section border-radius border white-bg">

@@ -9,7 +9,7 @@
 }
 
 .profile-header > img {
-    margin-bottom: -36px;
+    margin-bottom: 32px !important;
     object-fit: cover;
     width: 100%;
     height: 200px;
@@ -18,7 +18,7 @@
 }
 
 .profile-avatar {
-    margin-left: 64px;
+    margin-left: 64px!important;
     scale: 3;
 }
 
@@ -30,7 +30,17 @@
 }
 
 .profile-button {
+    color: white;
     background-color: #0a66c2;
+    padding: 6px 16px;
+    margin-top: 8px;
+    border-radius: 25px;
+}
+
+.btn-clicked {
+    background-color: white;
+    color: #0a66c2;
+    border: 1px solid #0a66c2;
     padding: 6px 16px;
     margin-top: 8px;
     border-radius: 25px;
