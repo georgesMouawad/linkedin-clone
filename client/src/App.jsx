@@ -32,9 +32,9 @@ const App = () => {
                 <Routes>
                     <Route path="/auth" element={<Authentication onLogin={() => setIsAuthenticated(true)} />} />
                     <Route
-                        path="/"
+                        path="/feed"
                         element={
-                            isAuthenticated ? <Feed /> : <Authentication onLogin={() => setIsAuthenticated(true)} />
+                            isAuthenticated ? <Feed user_id={currentUser?.id} /> : <Authentication onLogin={() => setIsAuthenticated(true)} />
                         }
                     />
                     <Route

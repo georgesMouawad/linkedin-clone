@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './feed.css';
 
 import CreateIcon from '@mui/icons-material/Create';
@@ -12,107 +13,99 @@ import Post from './Post/Post';
 
 import FollowCard from './FollowCard/FollowCard';
 
-const Feed = ({currentUserId}) => {
-
+const Feed = ({ user_id }) => {
     const [input, setInput] = useState('');
     const [posts, setPosts] = useState([]);
+    const [userData, setUserData] = useState(null);
+    const [followers, setFollowers] = useState([]);
+    const [topUsers, setTopUsers] = useState([]);
 
-    // useEffect(() => {
-    //     // Fetch posts from API
-    //     // Example API call:
-    //     // fetch('your-api-endpoint')
-    //     //     .then(response => response.json())
-    //     //     .then(data => setPosts(data));
-    // }, []); // Empty dependency array to fetch data only once
+    useEffect(() => {
+        const getAllPosts = async (user_id) => {
+            try {
+                const getAllPostsResponse = await axios.get('/posts/get.php');
+                const getUserDataResponse = await axios.get('/users/get.php?id=' + user_id);
+                const getFollowersResponse = await axios.get('/followers/get.php?user_id=' + user_id);
+                const getTopUsersResponse = await axios.get('/followers/gettop.php');
 
-    // const getUserData = (user_id) => {
-    //     // Fetch user data from API based on user_id
-    //     // Example API call:
-    //     // fetch(`your-api-endpoint/${user_id}`)
-    //     //     .then(response => response.json())
-    //     //     .then(data => return data);
-    //     return {
-    //         name: 'John Wayne',
-    //         email: 'john@mail.com',
-    //         connections: '4'
-    //     };
-    // };
+                const sortedPosts = getAllPostsResponse.data.data.sort((a, b) => {
+                    return new Date(b.created_at) - new Date(a.created_at);
+                });
 
-    // const sendPost = (event) => {
-    //     event.preventDefault();
-    //     // Send post to API instead of updating local state
-    //     // Example API call:
-    //     // fetch('your-api-endpoint', {
-    //     //     method: 'POST',
-    //     //     body: JSON.stringify({ name: getUserData(currentUserId).name, description: input }),
-    //     //     headers: {
-    //     //         'Content-Type': 'application/json'
-    //     //     }
-    //     // })
-    //     // .then(response => response.json())
-    //     // .then(data => {
-    //     //     // Update state if necessary
-    //     //     setPosts([...posts, data]);
-    //     // });
-    //     setInput('');
-    // };
+                setPosts(sortedPosts);
+                setUserData(getUserDataResponse.data.data);
+                setFollowers(getFollowersResponse.data.data);
+                setTopUsers(getTopUsersResponse.data.data);
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
 
+        getAllPosts(user_id);
+    }, [user_id]);
 
-    const getUserData = (user_id) => {
-        //fetch user data from user_id API call
-        return {
-            name: 'John Wayne',
-            email: 'john@mail.com',
-            connections: '4'
+    const addPost = async (event) => {
+        event.preventDefault();
+        const data = new FormData();
+        data.append('email', userData.email);
+        data.append('message', input);
+
+        try {
+            const response = await axios.post('/posts/add.php', data);
+
+            if (response.data.status === 'success') {
+                setPosts(response.data.data);
+            } else {
+                throw new Error(response.data.message);
+            }
+        } catch (error) {
+            console.log(error.message);
         }
     };
 
-    const sendPost = (event) => {
-        event.preventDefault();
-        //link and set input as message
-        // setPosts([...posts, { name:input, description: message: input }]);
-        console.log(currentUserId,input);
-        setPosts([...posts, { name: getUserData(currentUserId).name , description: input}]);
-        setInput('');
-    };
-
-    const {name, email, connections} = getUserData(currentUserId);
-
-
-    return (
-        <div className="feed flex">
-            <Sidebar name={name} email={email} connections={connections} />
-            <div className="feed-main">
-                <div className="feed-input-container border-radius white-bg box-shadow border">
-                    <div className="feed-input flex border border-radius-l">
-                        <CreateIcon />
-                        <form className="flex">
-                            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
-                            <button onClick={sendPost} type="submit">
-                                Send
-                            </button>
-                        </form>
+    if (userData && followers) {
+        return (
+            <div className="feed flex">
+                <Sidebar userData={userData} followers={followers} />
+                <div className="feed-main">
+                    <div className="feed-input-container border-radius white-bg box-shadow border">
+                        <div className="feed-input flex border border-radius-l">
+                            <CreateIcon />
+                            <form className="flex">
+                                <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+                                <button onClick={addPost} type="submit">
+                                    Send
+                                </button>
+                            </form>
+                        </div>
+                        <div className="feed-input-options flex space-evenly">
+                            <InputOption Icon={ImageIcon} title="Media" />
+                            <InputOption Icon={EventNotIcon} title="Event" />
+                            <InputOption Icon={CalendarViewDayIcon} title="Write Article" />
+                        </div>
                     </div>
-                    <div className="feed-input-options flex space-evenly">
-                        <InputOption Icon={ImageIcon} title="Media" />
-                        <InputOption Icon={EventNotIcon} title="Event" />
-                        <InputOption Icon={CalendarViewDayIcon} title="Write Article" />
+                    <div className="posts-container">
+                        {posts.length > 0 &&
+                            posts.map((post) => {
+                                return (
+                                    <Post
+                                        key={post.id}
+                                        posterName={userData?.first_name + ' ' + userData?.last_name}
+                                        message={post?.description}
+                                        date={post?.created_at}
+                                    />
+                                );
+                            })}
                     </div>
                 </div>
-                <div className="posts-container">
-                {posts.length > 1 && posts.map((post) => {
-                    return <Post posterName={post.name} message={post.description} date={new Date().toUTCString()} />
-                })}
+                <div className="right-section border-radius white-bg border box-shadow">
+                    <h3 className="dark-text">Add to your feed</h3>
+                    {topUsers?.map((user) => {
+                        return <FollowCard key={user.id} user={user} />;
+                    })}
                 </div>
             </div>
-            <div className="right-section border-radius white-bg border box-shadow">
-                <h3 className="dark-text">Add to your feed</h3>
-                {/* map through several user from users and pass as props 
-                to <FollowCard/>*/}
-            </div>
-                
-        </div>
-    );
+        );
+    }
 };
-
 export default Feed;
