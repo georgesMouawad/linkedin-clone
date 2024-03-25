@@ -12,32 +12,38 @@ import Post from './Post/Post';
 import Sidebar from './Sidebar/Sidebar';
 import FollowCard from './FollowCard/FollowCard';
 
-const Feed = ({ user_id }) => {
+const Feed = () => {
     const [input, setInput] = useState('');
     const [posts, setPosts] = useState([]);
     const [userData, setUserData] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [topUsers, setTopUsers] = useState([]);
 
+    const user_id = JSON.parse(localStorage.getItem('currentUser')).id;
+    const isCompany = JSON.parse(localStorage.getItem('currentUser')).isCompany;
+
     useEffect(() => {
         const getFeedData = async (user_id) => {
-            try {
+            let getUrl = '';
 
-                const getUserDataResponse = await axios.get('/users/get.php?id=' + user_id);
+            try {
+                isCompany ? (getUrl = '/companies/get.php?id=') : (getUrl = '/users/get.php?id=');
+                const getUserDataResponse = await axios.get(getUrl + user_id);
                 const getFollowersResponse = await axios.get('/followers/get.php?user_id=' + user_id);
-                const getTopUsersResponse = await axios.get('/followers/gettop.php?user_id=' + user_id);
+                const getTopUsersResponse = await axios.get(
+                    '/followers/gettop.php?user_id=' + user_id + (isCompany ? '&isCompany=company' : '')
+                );
 
                 setUserData(getUserDataResponse.data.data);
                 setFollowers(getFollowersResponse.data.data);
                 setTopUsers(getTopUsersResponse.data.data);
-                
             } catch (error) {
                 console.log(error.message);
             }
         };
 
         getFeedData(user_id);
-    }, [user_id]);
+    }, [user_id, isCompany]);
 
     useEffect(() => {
         const getAllPosts = async () => {
@@ -78,40 +84,41 @@ const Feed = ({ user_id }) => {
         setInput('');
     };
 
-    if(userData) return (
-        <div className="feed flex">
-            <Sidebar userData={userData} followers={followers} />
-            <div className="feed-main">
-                <div className="feed-input-container border-radius white-bg box-shadow border">
-                    <div className="feed-input flex border border-radius-l">
-                        <CreateIcon />
-                        <form className="flex">
-                            <input type="text" value={input} onChange={(event) => setInput(event.target.value)} />
-                            <button onClick={addPost} type="submit">
-                                Send
-                            </button>
-                        </form>
+    if (userData)
+        return (
+            <div className="feed flex">
+                <Sidebar userData={userData} followers={followers} isCompany={isCompany} />
+                <div className="feed-main">
+                    <div className="feed-input-container border-radius white-bg box-shadow border">
+                        <div className="feed-input flex border border-radius-l">
+                            <CreateIcon />
+                            <form className="flex">
+                                <input type="text" value={input} onChange={(event) => setInput(event.target.value)} />
+                                <button onClick={addPost} type="submit">
+                                    Send
+                                </button>
+                            </form>
+                        </div>
+                        <div className="feed-input-options flex space-evenly">
+                            <InputOption Icon={ImageIcon} title="Media" />
+                            <InputOption Icon={EventNotIcon} title="Event" />
+                            <InputOption Icon={CalendarViewDayIcon} title="Write Article" />
+                        </div>
                     </div>
-                    <div className="feed-input-options flex space-evenly">
-                        <InputOption Icon={ImageIcon} title="Media" />
-                        <InputOption Icon={EventNotIcon} title="Event" />
-                        <InputOption Icon={CalendarViewDayIcon} title="Write Article" />
+                    <div className="posts-container">
+                        {posts.length > 0 &&
+                            posts.map((post) => {
+                                return <Post key={post.id} post={post} userData={userData} />;
+                            })}
                     </div>
                 </div>
-                <div className="posts-container">
-                    {posts.length > 0 &&
-                        posts.map((post) => {
-                            return <Post key={post.id} post={post} userData={userData} />;
-                        })}
+                <div className="right-section border-radius white-bg border box-shadow">
+                    <h3 className="dark-text">Add to your feed</h3>
+                    {topUsers.map((topUser) => {
+                        return <FollowCard key={topUser.followee_id} topUser={topUser} isCompany={isCompany} />;
+                    })}
                 </div>
             </div>
-            <div className="right-section border-radius white-bg border box-shadow">
-                <h3 className="dark-text">Add to your feed</h3>
-                {topUsers.map((topUser) => {
-                    return <FollowCard key={topUser.followee_id} topUser={topUser} />;
-                })}
-            </div>
-        </div>
-    );
+        );
 };
 export default Feed;

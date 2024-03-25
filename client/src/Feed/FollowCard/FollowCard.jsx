@@ -8,7 +8,6 @@ import AddIcon from '@mui/icons-material/Add';
 import './followcard.css';
 
 const FollowCard = ({ topUser }) => {
-    // console.log(topUser);
     const { followee_id, followee_name, followee_type } = topUser;
     const [followeeData, setFolloweeData] = useState(null);
 

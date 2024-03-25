@@ -1,8 +1,8 @@
 import { Avatar } from '@mui/material';
 import './sidebar.css';
 
-const Sidebar = ({ userData, followers }) => {
-    const { first_name, last_name , email } = userData;
+const Sidebar = ({ userData, followers, isCompany }) => {
+    const { first_name, last_name , email, name } = userData;
     const followersCount = followers.total_following;
 
     return (
@@ -10,7 +10,7 @@ const Sidebar = ({ userData, followers }) => {
             <div className="sidebar-top flex column center white-bg">
                 <img src="/assets/bg.jpg" alt="background" />
                 <Avatar className="sidebar-avatar" />
-                <h2>Welcome, {first_name + ' ' + last_name}</h2>
+                <h2>Welcome, {isCompany ? name : first_name + ' ' + last_name}</h2>
                 <h4>{email}</h4>
             </div>
             <div className="sidebar-stats white-bg">

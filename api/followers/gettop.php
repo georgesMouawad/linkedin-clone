@@ -11,8 +11,8 @@ if(empty($_GET['user_id'])) {
 
 $user_id = $_GET['user_id'];
 
-if (!empty($_GET['is_company'])) {
- $type = $_GET['is_company'];
+if (!empty($_GET['isCompany'])) {
+ $type = $_GET['isCompany'];
 } else {
     $type = 'user';
 }
