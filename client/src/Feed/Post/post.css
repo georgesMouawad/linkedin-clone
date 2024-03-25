@@ -27,3 +27,7 @@
     margin-bottom: 12px;
 }
 
+.post-buttons {
+    gap: 12px;
+    justify-content: end;
+}

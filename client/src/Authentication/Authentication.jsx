@@ -36,23 +36,25 @@ const Authentication = ({onLogin}) => {
     };
 
     const handleSignup = async (formData) => {
-        const data = new FormData();
-        data.append('email', formData.email);
-        data.append('password', formData.password);
+
+        console.log(formData)
+        // const data = new FormData();
+        // data.append('email', formData.email);
+        // data.append('password', formData.password);
         
-        try {
-            const response = await axios.post('/users/signup.php', data)
-            if (response.data.status === 'success') {
-                localStorage.setItem('currentUser', JSON.stringify(response.data.data));
-                onLogin()
-                navigate('/')
-                return;
-            } else {
-                throw new Error(response.data.message);
-            }
-        } catch (error) {
-            console.log(error.message)
-        }
+        // try {
+        //     const response = await axios.post('/users/signup.php', data)
+        //     if (response.data.status === 'success') {
+        //         localStorage.setItem('currentUser', JSON.stringify(response.data.data));
+        //         onLogin()
+        //         navigate('/')
+        //         return;
+        //     } else {
+        //         throw new Error(response.data.message);
+        //     }
+        // } catch (error) {
+        //     console.log(error.message)
+        // }
     };
 
     return (

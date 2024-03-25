@@ -1,42 +1,57 @@
-import './followcard.css';
+
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import { Avatar } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-const FollowCard = ({ user_id }) => {
-    
+import './followcard.css';
 
-    const getUserData = (user_id) => {
-        //fetch user data from user_id API call
-        return {
-            name: 'John Wayne',
-            imageUrl: null,
-            occupation: getCurrentOccupation()
-        }
-    }
+const FollowCard = ({ topUser }) => {
+    // console.log(topUser);
+    const { followee_id, followee_name, followee_type } = topUser;
+    const [followeeData, setFolloweeData] = useState(null);
 
-    const getCurrentOccupation = () => {
-        //fetch user data from user_id API call
-        return 'Software Engineer';
-    }
+    useEffect(() => {
+        const getTopUserOccupation = async () => {
+            try {
+                if (followee_type === 'user') {
+                    const response = await axios.get('/experiences/getcurrent.php?user_id=' + followee_id);
+                    if (response.data.status === 'success') {
+                        setFolloweeData(response.data.data.position);
+                    }
+                } else {
+                    const response = await axios.get('/companies/get.php?id=' + followee_id);
+                    if (response.data.status === 'success') {
+                        setFolloweeData(response.data.data.description);
+                    }
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
+
+        getTopUserOccupation();
+    }, [followee_id, followee_type]);
 
     const handleOnclick = () => {
-        console.log('Followed', name);
-    }
+        console.log('Followed', followee_name);
+    };
 
-    const { name, imageUrl, occupation } = getUserData(user_id);
-
-
-    return (<div className="follow">
-    <div className="follow-card flex">
-        {!imageUrl ? <Avatar className='avatar'/> : <img src={imageUrl} alt="profile" className='avatar' />}
-        <div className="follow-card-info">
-            <h4>{name}</h4>
-            <p className='light-text'>{occupation}</p>
+    if (topUser && followeeData) return (
+        <div className="follow">
+            <div className="follow-card flex">
+                <Avatar className="avatar" /> 
+                <div className="follow-card-info">
+                    <h4>{followee_name}</h4>
+                    <p className="light-text">{followeeData}</p>
+                </div>
+            </div>
+            <button className="follow-btn flex center border-radius-m" onClick={handleOnclick}>
+                <AddIcon /> <span>Follow</span>
+            </button>
         </div>
-    </div>
-    <button className='follow-btn flex center border-radius-m' onClick={handleOnclick}><AddIcon/> <span>Follow</span></button>
-</div>)
-}
+    );
+};
 
 export default FollowCard;

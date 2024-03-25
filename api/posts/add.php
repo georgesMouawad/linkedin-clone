@@ -13,13 +13,13 @@ if (empty($_POST['description']) || empty($_POST['email'])) {
 $description = $_POST['description'];
 $email = $_POST['email'];
 
-$get_poster_id = $mysqli->prepare("SELECT id FROM users WHERE email = ?");
+$get_poster_id = $mysqli->prepare("SELECT id, CONCAT(first_name, ' ', last_name) AS username FROM users WHERE email = ?");
 $get_poster_id->bind_param('s', $email);
 $get_poster_id->execute();
 $get_poster_id->store_result();
 
 if ($get_poster_id->num_rows === 0) {
-    $get_poster_id_from_companies = $mysqli->prepare("SELECT id FROM companies WHERE email = ?");
+    $get_poster_id_from_companies = $mysqli->prepare("SELECT id, name FROM companies WHERE email = ?");
     $get_poster_id_from_companies->bind_param('s', $email);
     $get_poster_id_from_companies->execute();
     $get_poster_id_from_companies->store_result();
@@ -31,7 +31,7 @@ if ($get_poster_id->num_rows === 0) {
         exit;
     }
 
-    $get_poster_id_from_companies->bind_result($company_id);
+    $get_poster_id_from_companies->bind_result($company_id, $company_name);
     $get_poster_id_from_companies->fetch();
     
     $add_post = $mysqli->prepare("INSERT INTO posts (description, company_id) VALUES (?, ?)");
@@ -40,7 +40,7 @@ if ($get_poster_id->num_rows === 0) {
 
 
 } else {
-    $get_poster_id->bind_result($user_id);
+    $get_poster_id->bind_result($user_id, $username);
     $get_poster_id->fetch();
 
     $add_post = $mysqli->prepare("INSERT INTO posts (description, user_id) VALUES (?, ?)");
@@ -54,8 +54,9 @@ $response['status'] = 'success';
 $response['message'] = 'Post added';
 $response['data'] = [
     'id' => $id,
-    'user_id' => $user_id,
-    'company_id' => $company_id,
+    'poster_name' => $username ?? $company_name,
+    'user_id' => $user_id ?? null,
+    'company_id' => $company_id ?? null,
     'description' => $description,
     'created_at' => date('Y-m-d H:i:s')
 ];

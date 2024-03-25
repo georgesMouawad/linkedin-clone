@@ -10,6 +10,7 @@ import Profile from './Profile/Profile';
 import './App.css';
 import './styles/utilities.css';
 import './styles/colors.css';
+import Network from './Network/Network';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,7 +33,7 @@ const App = () => {
                 <Routes>
                     <Route path="/auth" element={<Authentication onLogin={() => setIsAuthenticated(true)} />} />
                     <Route
-                        path="/feed"
+                        path="/"
                         element={
                             isAuthenticated ? <Feed user_id={currentUser?.id} /> : <Authentication onLogin={() => setIsAuthenticated(true)} />
                         }
@@ -47,6 +48,7 @@ const App = () => {
                             )
                         }
                     />
+                    <Route path="/network" element={<Network user_id={currentUser?.id}/>} />
                 </Routes>
             </BrowserRouter>
         </div>

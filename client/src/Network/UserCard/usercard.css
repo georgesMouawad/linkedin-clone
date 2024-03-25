@@ -1,0 +1,43 @@
+.user-card {
+    margin: 12px;
+    height: 300px;
+    width: 200px;
+    justify-content: space-between;
+}
+
+.bg-img > img{
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.profile-avatar {
+    margin-top: -64px;
+    margin-left: 0;
+    scale: 2.5;
+}
+
+.profile-text {
+    margin-top: 32px;
+}
+
+.connect-btn {
+    background-color: #0a66c2;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    width: 50%;
+    border-radius: 24px;
+    cursor: pointer;
+    margin: 0 auto 16px auto;
+}
+
+.connect-btn:hover {
+    background-color: #004182;
+}
+
+.clicked {
+    
+}

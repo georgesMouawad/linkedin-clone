@@ -2,7 +2,7 @@
 
 include('../connection.php');
 
-if(empty($_POST['email']) || empty($_POST['password'])) {
+if(empty($_POST['email']) || empty($_POST['password']) || empty($_POST['name'])) {
     $response['status'] = 'error';
     $response['message'] = 'Please fill all the fields';
     echo json_encode($response);
@@ -11,6 +11,7 @@ if(empty($_POST['email']) || empty($_POST['password'])) {
 
 $email = $_POST['email'];
 $password = $_POST['password'];
+$name = $_POST['name'];
 
 !empty($_POST['is_company']) ? $is_company = $_POST['is_company'] : $is_company = false;
 
@@ -28,12 +29,12 @@ if($query->num_rows > 0) {
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
     if($is_company) {
-        $query = $mysqli->prepare("INSERT INTO companies (email, password) VALUES (?, ?)");
+        $query = $mysqli->prepare("INSERT INTO companies (name, email, password) VALUES (?, ?, ?)");
     } else {
-        $query = $mysqli->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
+        $query = $mysqli->prepare("INSERT INTO users (first_name, email, password) VALUES (?, ?, ?)");
     }
 
-    $query->bind_param('ss', $email, $hashed_password);
+    $query->bind_param('sss',$name, $email, $hashed_password);
     $query->execute();
 
     $id = $mysqli->insert_id;

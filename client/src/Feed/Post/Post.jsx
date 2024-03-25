@@ -1,29 +1,27 @@
 import { Avatar } from '@mui/material';
-import './post.css'
-import InputOption from '../InputOption/InputOption';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ChatIcon from '@mui/icons-material/Chat';
-import SendIcon from '@mui/icons-material/Send';
+import './post.css';
 
-const Post = ({posterName, message, date}) => {
-    return <div className="post border-radius box-shadow border white-bg">
-        <div className="post-header flex">
-            <Avatar/>
-            <div className="post-info">
-                <h2>{posterName}</h2>
-                <p>{date}</p>
+const Post = ({ post, userData }) => {
+    const { poster_name, email, date, description } = post;
+
+    return (
+        <div className="post border-radius box-shadow border white-bg">
+            <div className="post-header flex">
+                <Avatar />
+                <div className="post-info">
+                    <h2>{poster_name}</h2>
+                    <p>{date}</p>
+                </div>
+            </div>
+            <div className="post-body">
+                <p>{description}</p>
+            </div>
+            <div className="post-buttons flex dark-text">
+                {/* {userData.email === email && <> <EditIcon />
+                <ClearIcon /> </>} */}
             </div>
         </div>
-        <div className="post-body">
-            <p>{message}</p>
-        </div>
-        <div className="post-buttons flex space-evenly">
-            <InputOption Icon={ThumbUpIcon} title='Like'/>
-            <InputOption Icon={ChatIcon} title='Comment'/>
-            <InputOption Icon={SendIcon} title='Apply'/>
-        </div>
-    </div>
-
-}
+    );
+};
 
 export default Post;
