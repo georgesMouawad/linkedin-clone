@@ -1,0 +1,48 @@
+.profile-edit-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.popup-container {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    width: 400px;
+    height: auto;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup-content h3 {
+    margin: 16px 0 32px 0;
+
+}
+
+.popup-content textarea {
+    width: 100%;
+    height: 100px;
+    margin: 8px 0;
+    padding: 16px;
+    border: 1px solid #e9ecef;
+}
+
+.popup-content button {
+    background-color: #0a66c2;
+    color: white;
+    padding: 6px 16px;
+    margin-top: 8px;
+    border-radius: 25px;
+    font-size: 16px;
+}

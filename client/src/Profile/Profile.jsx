@@ -3,8 +3,10 @@ import axios from 'axios';
 
 import './profile.css';
 
-import { Avatar } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+import { Avatar, colors } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import ClearIcon from '@mui/icons-material/Clear';
+import AddForm from './AddForm/AddForm';
 
 const Profile = ({ user_id }) => {
     const [profileData, setProfileData] = useState(null);
@@ -13,8 +15,6 @@ const Profile = ({ user_id }) => {
     const [skills, setSkills] = useState(null);
     const [followers, setFollowers] = useState(null);
     const [occupation, setOccupation] = useState(null);
-
-    // const [showEditPopup, setShowEditPopup] = useState(false);
 
     useEffect(() => {
         const getProfile = async () => {
@@ -40,59 +40,103 @@ const Profile = ({ user_id }) => {
         getProfile();
     }, [user_id]);
 
+    const handleDeleteClick = async (id, sectionName) => {
+        const data = new FormData();
+        data.append('id', id);
+        data.append('user_id', user_id);
+
+        try {
+            const response = await axios.post(`/${sectionName}s/delete.php?`, data);
+            if (sectionName === 'education') {
+                setEducationHistory(educationHistory.filter((education) => education.id !== id));
+            } else if (sectionName === 'experience') {
+                setExperienceHistory(experienceHistory.filter((experience) => experience.id !== id));
+            } else if (sectionName === 'skill') {
+                setSkills(skills.filter((skill) => skill.id !== id));
+            }
+            console.log(response);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
     const Experience = ({ experience }) => {
-        const { position, company, start_date, end_date } = experience;
+        const { id, position, company, start_date, end_date } = experience;
         return (
-            <div className="info-section flex">
-                <img src="/assets/company.png" alt="" />
-                <div className="text">
-                    <h4 className="dark-text">{position}</h4>
-                    <h5 className="light-text">{company}</h5>
-                    <h5 className="light-text">
-                        {start_date} - {end_date ? end_date : 'Present'}
-                    </h5>
+            <div className="flex space-between">
+                <div className="info-section flex">
+                    <img src="/assets/company.png" alt="" />
+                    <div className="text">
+                        <h4 className="dark-text">{position}</h4>
+                        <h5 className="light-text">{company}</h5>
+                        <h5 className="light-text">
+                            {start_date} - {end_date ? end_date : 'Present'}
+                        </h5>
+                    </div>
                 </div>
+                {isOwnProfile && <ClearIcon className="edit dark-text" onClick={() => handleDeleteClick(id, 'experience')} />}
             </div>
         );
     };
 
     const Education = ({ education }) => {
-        const { school, degree, field_of_study, start_date, end_date } = education;
+        const { id, school, degree, field_of_study, start_date, end_date } = education;
         return (
-            <div className="info-section flex">
-                <img src="/assets/school.png" alt="" />
-                <div className="text">
-                    <h4 className="dark-text">{degree}</h4>
-                    <h5 className="light-text">{school}</h5>
-                    <h5 className="light-text">{field_of_study}</h5>
-                    <h5 className="light-text">
-                        {start_date} - {end_date ? end_date : 'Present'}
-                    </h5>
+            <div className="flex space-between">
+                <div className="info-section flex">
+                    <img src="/assets/school.png" alt="" />
+                    <div className="text">
+                        <h4 className="dark-text">{degree}</h4>
+                        <h5 className="light-text">{school}</h5>
+                        <h5 className="light-text">{field_of_study}</h5>
+                        <h5 className="light-text">
+                            {start_date} - {end_date ? end_date : 'Present'}
+                        </h5>
+                    </div>
                 </div>
+                {isOwnProfile && <ClearIcon className="edit dark-text" onClick={() => handleDeleteClick(id, 'education')} />}
             </div>
         );
     };
 
     const Skill = ({ skill }) => {
+        const { id } = skill;
         return (
-            <div className="skills flex column">
-                <h4 className="dark-text">{skill.skill}</h4>
+            <div className="flex space-between">
+                <div className="skills flex column">
+                    <h4 className="dark-text">{skill.skill}</h4>
+                </div>
+                {isOwnProfile && <ClearIcon className="edit dark-text" onClick={() => handleDeleteClick(id, 'skill')} />}
             </div>
         );
     };
 
     const HeaderTop = ({ headername }) => {
+        const [showForm, setShowForm] = useState(false);
+    
+        const handleAddClick = () => {
+            setShowForm(true);
+        };
+
+        const handleFormSubmit = () => {
+            
+            setShowForm(false);
+        };
+
+        const handleFormCancel = () => {
+            setShowForm(false);
+        };
+    
         return (
             <div className="top flex space-between">
                 <h3>{headername}</h3>
-                {isOwnProfile && <EditIcon className="edit dark-text"/>}
+                {isOwnProfile && (
+                    <AddIcon className="edit dark-text" onClick={handleAddClick} />
+                )}
+                {showForm && <AddForm formType={headername === 'About' ? 'Edit Profile' : `Add ${headername}`} onSubmit={handleFormSubmit} onCancel={handleFormCancel}/>}
             </div>
         );
     };
-
-    // const toggleEditPopup = () => {
-    //     return 
-    // }
 
     const loggedUser = JSON.parse(localStorage.getItem('currentUser'));
     const isOwnProfile = loggedUser?.id === user_id;
