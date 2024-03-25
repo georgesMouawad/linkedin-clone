@@ -18,6 +18,17 @@
     margin-right: 8px;
 }
 
+.clicked {
+    background-color: #0a66c2 !important;
+    color: white !important;
+    border: 1px solid #0a66c2 !important;
+    padding: 6px !important;
+}
+
+.clicked span {
+    padding: 4px!important;
+}
+
 .follow-btn {
     width:auto;
     color: #0a66c2;
@@ -28,8 +39,10 @@
     cursor: pointer;
 }
 
+
 .follow-btn:hover {
     background-color: #e1f0f5;
+    color: #0a66c2;
 }
 
 .follow-btn span {

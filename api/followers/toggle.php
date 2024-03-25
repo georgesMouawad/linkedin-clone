@@ -59,6 +59,7 @@ if ($check_follow->num_rows > 0) {
     $delete_query->execute();
     $response['status'] = 'success';
     $response['message'] = 'Follow removed';
+    $response['data'] = false;
     echo json_encode($response);
     exit;
 }
@@ -71,11 +72,6 @@ $id = $mysqli->insert_id;
 
 $response['status'] = 'success';
 $response['message'] = 'Follow added';
-$response['data'] = [
-    'id' => $id,
-    'follower_id' => $follower_id,
-    'followee_id' => $followee_id,
-    'followee_type' => $followee_type,
-];
+$response['data'] = true;
 
 echo json_encode($response);

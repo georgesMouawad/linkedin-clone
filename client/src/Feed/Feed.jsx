@@ -115,7 +115,7 @@ const Feed = () => {
                 <div className="right-section border-radius white-bg border box-shadow">
                     <h3 className="dark-text">Add to your feed</h3>
                     {topUsers.map((topUser) => {
-                        return <FollowCard key={topUser.followee_id} topUser={topUser} isCompany={isCompany} />;
+                        return <FollowCard key={topUser.followee_id} topUser={topUser} user_id={user_id}  />;
                     })}
                 </div>
             </div>

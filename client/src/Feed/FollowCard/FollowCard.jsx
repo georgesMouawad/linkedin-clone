@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -7,9 +6,10 @@ import AddIcon from '@mui/icons-material/Add';
 
 import './followcard.css';
 
-const FollowCard = ({ topUser }) => {
+const FollowCard = ({ topUser, user_id }) => {
     const { followee_id, followee_name, followee_type } = topUser;
     const [followeeData, setFolloweeData] = useState(null);
+    const [isFollowing, setIsFollowing] = useState(false);
 
     useEffect(() => {
         const getTopUserOccupation = async () => {
@@ -29,28 +29,63 @@ const FollowCard = ({ topUser }) => {
                 console.log(error.message);
             }
         };
-
+        const getFollowStatus = async () => {
+            try {
+                const response = await axios.get(
+                    '/followers/check.php?follower_id=' +
+                        user_id +
+                        '&followee_id=' +
+                        followee_id +
+                        '&followee_type=' +
+                        followee_type
+                );
+                setIsFollowing(response.data.data);
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
+        getFollowStatus();
         getTopUserOccupation();
-    }, [followee_id, followee_type]);
+    }, [followee_id, followee_type, user_id]);
 
-    const handleOnclick = () => {
-        console.log('Followed', followee_name);
+    const handleFollow = async () => {
+        const data = new FormData();
+        data.append('follower_id', user_id);
+        data.append('followee_id', followee_id);
+        data.append('followee_type', followee_type);
+
+        try {
+            const response = await axios.post('/followers/toggle.php', data);
+            setIsFollowing(response.data.data);
+        } catch (error) {
+            console.log(error.message);
+        }
     };
 
-    if (topUser && followeeData) return (
-        <div className="follow">
-            <div className="follow-card flex">
-                <Avatar className="avatar" /> 
-                <div className="follow-card-info">
-                    <h4>{followee_name}</h4>
-                    <p className="light-text">{followeeData}</p>
+    if (topUser && followeeData)
+        return (
+            <div className="follow">
+                <div className="follow-card flex">
+                    <Avatar className="avatar" />
+                    <div className="follow-card-info">
+                        <h4>{followee_name}</h4>
+                        <p className="light-text">{followeeData}</p>
+                    </div>
                 </div>
+                <button
+                    className={`follow-btn flex center border-radius-m ${isFollowing ? 'clicked' : ''}`}
+                    onClick={handleFollow}
+                >
+                    {isFollowing ? (
+                        <span>Following</span>
+                    ) : (
+                        <>
+                            <AddIcon /> <span>Follow</span>
+                        </>
+                    )}
+                </button>
             </div>
-            <button className="follow-btn flex center border-radius-m" onClick={handleOnclick}>
-                <AddIcon /> <span>Follow</span>
-            </button>
-        </div>
-    );
+        );
 };
 
 export default FollowCard;

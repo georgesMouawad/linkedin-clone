@@ -22,9 +22,6 @@ const Profile = () => {
     const user_id = searchParams.get('id');
     const isCompany = searchParams.get('isCompany');
 
-    console.log(isCompany);
-    console.log(user_id);
-
     const loggedUser = JSON.parse(localStorage.getItem('currentUser'));
     const isOwnProfile = loggedUser?.id === user_id;
 
@@ -66,12 +63,11 @@ const Profile = () => {
                     '/followers/check.php?follower_id=' +
                         loggedUser.id +
                         '&followee_id=' +
-                        user_id +
+                        parseInt(user_id) +
                         '&followee_type=' +
                         (isCompany ? 'company' : 'user')
                 );
 
-                console.log(loggedUser.id, user_id, isCompany, response.data.data);
                 setIsFollowing(response.data.data);
             } catch (error) {
                 console.log(error.message);
@@ -199,7 +195,6 @@ const Profile = () => {
                     break;
             }
 
-            console.log(data);
             setShowForm(false);
         };
 
@@ -223,17 +218,15 @@ const Profile = () => {
         );
     };
 
-    const handleFollow = async (id, user_id, isCompany) => {
+    const handleFollow = async () => {
         const data = new FormData();
-        data.append('follower_id', user_id);
-        data.append('followee_id', id);
+        data.append('follower_id', loggedUser.id);
+        data.append('followee_id', user_id);
         data.append('followee_type', isCompany ? 'company' : 'user');
-
-        console.log('here', data);
 
         try {
             const response = await axios.post('/followers/toggle.php', data);
-            console.log(response);
+            setIsFollowing(response.data.data);
         } catch (error) {
             console.log(error.message);
         }
