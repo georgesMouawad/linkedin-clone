@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 
-const SignupForm = ({ switchHandler, handleSignup, validationError }) => {
+const SignupForm = ({ switchHandler, handleSignup, validationError, apiError }) => {
     const [formData, setFormData] = useState({
         email: '',
         name: '',
@@ -32,7 +32,7 @@ const SignupForm = ({ switchHandler, handleSignup, validationError }) => {
                 </div>
                 <div>
                     <label>Name:</label>
-                    <input type="text" name="email" placeholder="name" required onChange={handleChange} />
+                    <input type="text" name="name" placeholder="name" required onChange={handleChange} />
                 </div>
                 <div>
                     <label>Password:</label>
@@ -40,13 +40,16 @@ const SignupForm = ({ switchHandler, handleSignup, validationError }) => {
                 </div>
                 <div className="company-check flex center">
                     <label>Are you a company?</label>
-                    <input type="checkbox" name="isCompany" checked={formData.isCompany} onChange={handleCheckboxChange} />
+                    <input
+                        type="checkbox"
+                        name="isCompany"
+                        checked={formData.isCompany}
+                        onChange={handleCheckboxChange}
+                    />
                 </div>
-                {validationError && (
-                    <div className="flex center validation-display">
-                        <p>{validationError}</p>
-                    </div>
-                )}
+                <div className="flex center validation-display">
+                    {apiError.length > 0 && apiError.map((error, index) => <p key={index}>{error}</p>)}
+                </div>
                 <button className="register-btn primary-bg white-text box-shadow" type="submit">
                     Register
                 </button>

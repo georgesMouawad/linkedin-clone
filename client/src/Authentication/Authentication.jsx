@@ -8,10 +8,11 @@ import './authentication.css';
 
 const Authentication = ({onLogin}) => {
     const [isLogin, setIsLogin] = useState(true);
-    // const [validationError, setValidationError] = useState(null);
+    const [apiError, setApiError] = useState([]);
     const navigate = useNavigate();
 
     const switchHandler = (isLogin) => {
+        setApiError([]);
         setIsLogin(isLogin);
     };
 
@@ -32,37 +33,42 @@ const Authentication = ({onLogin}) => {
             }
         } catch (error) {
             console.log(error.message);
+            setApiError([error.message]);
         }
     };
 
     const handleSignup = async (formData) => {
 
-        console.log(formData)
-        // const data = new FormData();
-        // data.append('email', formData.email);
-        // data.append('password', formData.password);
+        console.log('form data', formData)
+
+        const data = new FormData();
+        data.append('email', formData.email);
+        data.append('password', formData.password);
+        data.append('name', formData.name);
+        data.append('isCompany', formData.isCompany);
         
-        // try {
-        //     const response = await axios.post('/users/signup.php', data)
-        //     if (response.data.status === 'success') {
-        //         localStorage.setItem('currentUser', JSON.stringify(response.data.data));
-        //         onLogin()
-        //         navigate('/')
-        //         return;
-        //     } else {
-        //         throw new Error(response.data.message);
-        //     }
-        // } catch (error) {
-        //     console.log(error.message)
-        // }
+        try {
+            const response = await axios.post('/users/signup.php', data)
+            if (response.data.status === 'success') {
+                localStorage.setItem('currentUser', JSON.stringify(response.data.data));
+                onLogin()
+                navigate('/')
+                return;
+            } else {
+                throw new Error(response.data.message);
+            }
+        } catch (error) {
+            console.log(error.message)
+            setApiError([error.message])
+        }
     };
 
     return (
         <section className="form-component white-bg flex center">
             {isLogin ? (
-                <LoginForm switchHandler={switchHandler} handleLogin={handleLogin} />
+                <LoginForm switchHandler={switchHandler} handleLogin={handleLogin} apiError={apiError} />
             ) : (
-                <SignupForm switchHandler={switchHandler} handleSignup={handleSignup} />
+                <SignupForm switchHandler={switchHandler} handleSignup={handleSignup} apiError={apiError} />
             )}
         </section>
     );

@@ -1,28 +1,15 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import '../authentication.css';
 
-const LoginForm = ({ switchHandler, handleLogin }) => {
-    const [validationError, setValidationError] = useState(null);
+const LoginForm = ({ switchHandler, handleLogin, apiError }) => {
     const [formdata, setFormData] = useState({});
-    const [submitted, setSubmitted] = useState(false);
-
-    useEffect(() => {
-        if (!submitted) return;
-        if (!formdata.email || !formdata.password) {
-            setValidationError('Please enter your credentials');
-        } else {
-            setValidationError(null);
-        }
-    }, [formdata, submitted]);
 
     const handleSubmit = (e) => {
+        handleLogin(formdata);
         e.preventDefault();
-        setSubmitted(true);
-        !validationError && handleLogin(formdata);
     };
 
     const handleChange = (e) => {
-        setSubmitted(false);
         setFormData({
             ...formdata,
             [e.target.name]: e.target.value,
@@ -37,17 +24,15 @@ const LoginForm = ({ switchHandler, handleLogin }) => {
             <form className="flex column" onSubmit={handleSubmit}>
                 <div>
                     <label>Email:</label>
-                    <input type="text" name="email" placeholder="user@mail.com" onChange={handleChange} />
+                    <input type="text" name="email" placeholder="user@mail.com" onChange={handleChange} required/>
                 </div>
                 <div>
                     <label>Password:</label>
-                    <input type="password" name="password" placeholder="password" onChange={handleChange} />
+                    <input type="password" name="password" placeholder="password" onChange={handleChange} required/>
                 </div>
-                {validationError && (
-                    <div className="flex center validation-display">
-                        <p>{validationError}</p>
-                    </div>
-                )}
+                <div className="flex center validation-display">
+                    {apiError.length > 0 && apiError.map((error, index) => <p key={index}>{error}</p>)}
+                </div>
                 <button className="login-btn primary-bg white-text box-shadow" type="submit">
                     Login
                 </button>

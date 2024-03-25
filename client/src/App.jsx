@@ -29,7 +29,7 @@ const App = () => {
     return (
         <div className="app flex column light-gray-bg ">
             <BrowserRouter>
-                {isAuthenticated ? <Header /> : null}
+                {isAuthenticated ? <Header onSignOut={()=> setIsAuthenticated(false)} /> : null}
                 <Routes>
                     <Route path="/auth" element={<Authentication onLogin={() => setIsAuthenticated(true)} />} />
                     <Route

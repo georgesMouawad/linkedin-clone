@@ -1,16 +1,25 @@
-import React from 'react';
+import { useState } from 'react';
 
 import './addform.css';
 
 const AddForm = ({ formType, onSubmit, onCancel }) => {
+    const [formData, setformData] = useState({});
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit();
+        onSubmit(formData);
     };
 
     const handleCancel = () => {
         onCancel();
-    }
+    };
+
+    const handleChange = (e) => {
+        setformData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
 
     return (
         <div className="profile-edit-popup">
@@ -20,37 +29,44 @@ const AddForm = ({ formType, onSubmit, onCancel }) => {
                     <form className="flex column center" onSubmit={handleSubmit}>
                         {formType === 'Edit Profile' && (
                             <>
-                                <input type="text" placeholder="First Name" />
-                                <input type="text" placeholder="Last Name" />
-                                <textarea placeholder="Your bio..."></textarea>
+                                <input type="text" placeholder="First Name" name="first_name" required onChange={handleChange} />
+                                <input type="text" placeholder="Last Name" name="last_name" required onChange={handleChange} />
+                                <textarea placeholder="Your bio..." name="bio" onChange={handleChange}></textarea>
                             </>
                         )}
                         {formType === 'Add Experience' && (
                             <>
-                                <input type="text" placeholder="Position" name="position" />
-                                <input type="text" placeholder="Company" name="company" />
-                                <input type="text" placeholder="Start Date" name="start_date" />
-                                <input type="text" placeholder="End Date" name="end_date" />
+                                <input type="text" placeholder="Position" name="position" onChange={handleChange} />
+                                <input type="text" placeholder="Company" name="company" onChange={handleChange} />
+                                <input type="text" placeholder="Start Date" name="start_date" onChange={handleChange} />
+                                <input type="text" placeholder="End Date" name="end_date" onChange={handleChange} />
                             </>
                         )}
                         {formType === 'Add Education' && (
                             <>
-                                <input type="text" placeholder="School" name="school" />
-                                <input type="text" placeholder="Degree" name="degree" />
-                                <input type="text" placeholder="Field of Study" name="field_of_study" />
-                                <input type="text" placeholder="Start Date" name="start_date" />
-                                <input type="text" placeholder="End Date" name="end_date" />
+                                <input type="text" placeholder="School" name="school" onChange={handleChange} />
+                                <input type="text" placeholder="Degree" name="degree" onChange={handleChange} />
+                                <input
+                                    type="text"
+                                    placeholder="Field of Study"
+                                    name="field_of_study"
+                                    onChange={handleChange}
+                                />
+                                <input type="text" placeholder="Start Date" name="start_date" onChange={handleChange} />
+                                <input type="text" placeholder="End Date" name="end_date" onChange={handleChange} />
                             </>
                         )}
                         {formType === 'Add Skills' && (
                             <>
-                                <input type="text" placeholder="Skill" name="skill" />
+                                <input type="text" placeholder="Skill" name="skill" onChange={handleChange} />
                             </>
                         )}
                         <button type="submit" className="profile-button">
                             Add
                         </button>
-                        <button type="button" className="profile-button cancel-button" onClick={handleCancel}>Cancel</button>
+                        <button type="button" className="profile-button cancel-button" onClick={handleCancel}>
+                            Cancel
+                        </button>
                     </form>
                 </div>
             </div>

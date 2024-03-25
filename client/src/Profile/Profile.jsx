@@ -3,18 +3,21 @@ import axios from 'axios';
 
 import './profile.css';
 
-import { Avatar, colors } from '@mui/material';
+import { Avatar } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddForm from './AddForm/AddForm';
 
 const Profile = ({ user_id }) => {
-    const [profileData, setProfileData] = useState(null);
-    const [educationHistory, setEducationHistory] = useState(null);
-    const [experienceHistory, setExperienceHistory] = useState(null);
-    const [skills, setSkills] = useState(null);
-    const [followers, setFollowers] = useState(null);
-    const [occupation, setOccupation] = useState(null);
+    const [profileData, setProfileData] = useState([]);
+    const [educationHistory, setEducationHistory] = useState([]);
+    const [experienceHistory, setExperienceHistory] = useState([]);
+    const [skills, setSkills] = useState([]);
+    const [followers, setFollowers] = useState([]);
+    const [occupation, setOccupation] = useState('');
+
+    const loggedUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isOwnProfile = loggedUser?.id === user_id;
 
     useEffect(() => {
         const getProfile = async () => {
@@ -74,7 +77,9 @@ const Profile = ({ user_id }) => {
                         </h5>
                     </div>
                 </div>
-                {isOwnProfile && <ClearIcon className="edit dark-text" onClick={() => handleDeleteClick(id, 'experience')} />}
+                {isOwnProfile && (
+                    <ClearIcon className="edit dark-text" onClick={() => handleDeleteClick(id, 'experience')} />
+                )}
             </div>
         );
     };
@@ -94,7 +99,9 @@ const Profile = ({ user_id }) => {
                         </h5>
                     </div>
                 </div>
-                {isOwnProfile && <ClearIcon className="edit dark-text" onClick={() => handleDeleteClick(id, 'education')} />}
+                {isOwnProfile && (
+                    <ClearIcon className="edit dark-text" onClick={() => handleDeleteClick(id, 'education')} />
+                )}
             </div>
         );
     };
@@ -106,40 +113,76 @@ const Profile = ({ user_id }) => {
                 <div className="skills flex column">
                     <h4 className="dark-text">{skill.skill}</h4>
                 </div>
-                {isOwnProfile && <ClearIcon className="edit dark-text" onClick={() => handleDeleteClick(id, 'skill')} />}
+                {isOwnProfile && (
+                    <ClearIcon className="edit dark-text" onClick={() => handleDeleteClick(id, 'skill')} />
+                )}
             </div>
         );
     };
 
     const HeaderTop = ({ headername }) => {
         const [showForm, setShowForm] = useState(false);
-    
+
         const handleAddClick = () => {
             setShowForm(true);
         };
 
-        const handleFormSubmit = () => {
-            
+        const handleFormSubmit = (formData) => {
+            const data = new FormData();
+
+            switch (headername) {
+                case 'About':
+                    data.append('user_id', user_id);
+                    data.append('first_name', formData.first_name);
+                    data.append('last_name', formData.last_name);
+                    data.append('bio', formData.bio);
+                    break;
+                case 'Experience':
+                    data.append('user_id', user_id);
+                    data.append('position', formData.position);
+                    data.append('company', formData.company);
+                    data.append('start_date', formData.start_date);
+                    data.append('end_date', formData.end_date);
+                    break;
+                case 'Education':
+                    data.append('user_id', user_id);
+                    data.append('school', formData.school);
+                    data.append('degree', formData.degree);
+                    data.append('field_of_study', formData.field_of_study);
+                    data.append('start_date', formData.start_date);
+                    data.append('end_date', formData.end_date);
+                    break;
+                case 'Skills':
+                    data.append('user_id', user_id);
+                    data.append('skill', formData.skill);
+                    break;
+                default:
+                    break;
+            }
+
+            console.log(data)
             setShowForm(false);
         };
 
         const handleFormCancel = () => {
             setShowForm(false);
         };
-    
+
         return (
             <div className="top flex space-between">
                 <h3>{headername}</h3>
-                {isOwnProfile && (
-                    <AddIcon className="edit dark-text" onClick={handleAddClick} />
+                {isOwnProfile && <AddIcon className="edit dark-text" onClick={handleAddClick} />}
+                {/* Pass down showForm, onSubmit, and onCancel as props to AddForm */}
+                {showForm && (
+                    <AddForm
+                        formType={headername === 'About' ? 'Edit Profile' : `Add ${headername}`}
+                        onSubmit={(formData) => handleFormSubmit(formData)}
+                        onCancel={handleFormCancel}
+                    />
                 )}
-                {showForm && <AddForm formType={headername === 'About' ? 'Edit Profile' : `Add ${headername}`} onSubmit={handleFormSubmit} onCancel={handleFormCancel}/>}
             </div>
         );
     };
-
-    const loggedUser = JSON.parse(localStorage.getItem('currentUser'));
-    const isOwnProfile = loggedUser?.id === user_id;
 
     return (
         <div className="profile flex column light-gray-bg">
@@ -148,36 +191,32 @@ const Profile = ({ user_id }) => {
                 <Avatar className="profile-avatar" />
                 <div className="profile-info">
                     <h2>
-                        {profileData?.first_name} {profileData?.last_name}
+                        {profileData.first_name} {profileData.last_name}
                     </h2>
-                    <h4>{occupation?.position}</h4>
+                    <h4>{occupation.position}</h4>
                     <h5>
-                        Connections <span>{followers?.total_following}</span>
+                        Connections <span>{followers.total_following}</span>
                     </h5>
                     {!isOwnProfile && <button className="profile-button white-text">Connect</button>}
                 </div>
             </div>
             <div className="profile-section border-radius border white-bg">
                 <HeaderTop headername={'About'} />
-                <p>{profileData?.bio}</p>
+                <p>{profileData.bio}</p>
             </div>
             <div className="profile-section border-radius border white-bg">
                 <HeaderTop headername={'Experience'} />
-                {experienceHistory?.map((experience) => (
-                    <Experience key={experience.id} experience={experience} />
-                ))}
+                {experienceHistory.length > 0 &&
+                    experienceHistory.map((experience) => <Experience key={experience.id} experience={experience} />)}
             </div>
             <div className="profile-section border-radius border white-bg">
                 <HeaderTop headername={'Education'} />
-                {educationHistory?.map((education) => (
-                    <Education key={education.id} education={education} />
-                ))}
+                {educationHistory?.length > 0 &&
+                    educationHistory.map((education) => <Education key={education.id} education={education} />)}
             </div>
             <div className="profile-section border-radius border white-bg">
                 <HeaderTop headername={'Skills'} />
-                {skills?.map((skill) => (
-                    <Skill key={skill.id} skill={skill} />
-                ))}
+                {skills.length > 0 && skills.map((skill) => <Skill key={skill.id} skill={skill} />)}
             </div>
         </div>
     );

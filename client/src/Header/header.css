@@ -28,6 +28,18 @@ header {
     outline: none;
     border: none;
     background: none;
-    margin-bottom: 0;
+    margin-bottom: 0!important;
+}
+
+.sign-out-btn {
+    background-color: #0a66c2;
+    color: white;
+    padding: 4px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.sign-out-btn:hover {
+    background-color: #004182;
 }
 

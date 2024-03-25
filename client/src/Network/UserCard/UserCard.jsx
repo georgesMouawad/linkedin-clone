@@ -29,7 +29,6 @@ const UserCard = ({ user }) => {
         getCurrentOccupation(id);
     }, [id, bio, description]);
 
-    console.log(user)
     return (
         <div className="user-card white-bg border border-radius flex column">
             <div className="bg-img border-radius">
