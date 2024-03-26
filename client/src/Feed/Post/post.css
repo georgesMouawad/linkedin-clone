@@ -31,3 +31,11 @@
     gap: 12px;
     justify-content: end;
 }
+
+.send-icon {
+    cursor: pointer;
+}
+
+.send-icon:hover {
+    color: #0077b6;
+}

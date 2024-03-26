@@ -40,6 +40,10 @@ if($check_user_id->num_rows > 0 && $check_job_id->num_rows > 0)
 
         $response['status'] = 'success';
         $response['message'] = 'Applied to job';
+        $response['data'] = [
+            'job_id' => $job_id,
+            'user_id' => $user_id
+        ];
     }
 } else {
     $response['status'] = 'error';

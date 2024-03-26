@@ -11,11 +11,12 @@ const HeaderOption = ({ Icon, title }) => {
             const isCompany = JSON.parse(localStorage.getItem('currentUser')).isCompany;
             const id = JSON.parse(localStorage.getItem('currentUser')).id;
 
-            !isCompany ? navigate(`/profile?id=${id}`) : navigate(`/profile?id=${id}&isCompany=true`)
-            
+            !isCompany ? navigate(`/profile?id=${id}`) : navigate(`/profile?id=${id}&isCompany=true`);
         } else if (title === 'Home') {
             navigate('/');
-        } else {
+        } else if (title === 'Jobs') {
+            navigate('/jobs');
+        } else if (title === 'Network') {
             navigate('/network');
         }
     };

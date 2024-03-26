@@ -27,18 +27,22 @@ if (!empty($_GET['id'])) {
     }
 
 } else {
-    $get_all = $mysqli->prepare("SELECT id, title, description, company_id FROM jobs");
+    $get_all = $mysqli->prepare("SELECT jobs.id, jobs.title, jobs.description, jobs.company_id, jobs.created_at, companies.name 
+                                FROM jobs 
+                                JOIN companies ON jobs.company_id = companies.id;");
     $get_all->execute();
     $get_all->store_result();
 
     if($get_all->num_rows > 0) {
-        $get_all->bind_result($id, $title, $description, $company_id);
+        $get_all->bind_result($id, $title, $description, $company_id, $created_at, $company_name );
         while($get_all->fetch()) {
             $job = [
                 'id' => $id,
                 'title' => $title,
-                'description' => $description,
-                'company_id' => $company_id
+                'job_description' => $description,
+                'company_id' => $company_id,
+                'company_name' => $company_name,
+                'created_at' => $created_at
             ];
             $jobs[] = $job;
         }

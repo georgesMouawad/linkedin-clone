@@ -1,0 +1,26 @@
+
+.jobs-main {
+    width: 1000px;
+    margin: 16px auto;
+}
+
+.jobs-container {
+    width: 100%;
+}
+
+.inputs-container {
+    padding: 16px;
+}
+
+.inputs-container>form {
+    display: flex;
+    width: 100%;
+}
+
+.input-main {
+    margin-bottom: 16px;
+}
+
+.inputs button {
+    display: none;
+}
