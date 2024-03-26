@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Avatar } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -6,6 +8,7 @@ import axios from 'axios';
 import './post.css';
 
 const Post = ({ post = {}, job = {} }) => {
+    const [applied, setApplied] = useState(false);
     const { poster_name, date, description} = post;
     const {id , title, job_description, company_name, created_at} = job;
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -18,14 +21,14 @@ const Post = ({ post = {}, job = {} }) => {
             data.append('job_id', id);
 
             axios.post('/applications/add.php', data).then((response) => {
-                console.log(response.data);
+                setApplied(true);
             });
         } catch (error) {
             console.log(error.message);
         }
     }
 
-    return (
+    if(!applied) return (
         <div className="post border-radius box-shadow border white-bg">
             <div className="post-header flex">
                 <Avatar />
