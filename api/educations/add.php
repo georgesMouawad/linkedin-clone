@@ -26,12 +26,13 @@ if ($get_user->num_rows > 0) {
     $query->bind_param('isssss', $user_id, $school, $degree, $field_of_study, $start_date, $end_date);
     $query->execute();
 
-    $id = $mysqli->insert_id;
+    $edutcation_id = $mysqli->insert_id;
 
     $response['status'] = 'success';
     $response['message'] = 'Education added';
     $response['data'] = [
-        'id' => $id,
+        'id' => $edutcation_id,
+        'user_id' => $user_id,
         'school' => $school,
         'degree' => $degree,
         'field_of_study' => $field_of_study,

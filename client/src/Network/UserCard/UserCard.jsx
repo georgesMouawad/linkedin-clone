@@ -6,16 +6,14 @@ import { Avatar } from '@mui/material';
 import './usercard.css';
 
 const UserCard = ({ user }) => {
-
     const { id, name, bio, description } = user;
     const [userOccupation, setUserOccupation] = useState('');
 
     const navigate = useNavigate();
-    
 
     useEffect(() => {
         const getCurrentOccupation = async (id) => {
-            if(!bio) {
+            if (!bio) {
                 setUserOccupation(description);
                 return;
             }
@@ -52,7 +50,9 @@ const UserCard = ({ user }) => {
                     <p>{userOccupation}</p>
                 </div>
             </div>
-            <button className="connect-btn" onClick={handleOnclick}>Connect</button>
+            <button className="connect-btn" onClick={handleOnclick}>
+                Connect
+            </button>
         </div>
     );
 };
